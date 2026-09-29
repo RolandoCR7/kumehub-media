@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>Planta de primer orden 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: laboratorio de señales. Escena 3D a la izquierda como "osciloscopio", cuaderno de desarrollo a la derecha. */
+:root {
+  --bg: #eef2f1;
+  --panel: #ffffff;
+  --ink: #14201e;
+  --muted: #56655f;
+  --line: #d3dcd9;
+  --trace: #0d7a6f;
+  --sample: #b8540f;
+  --input: #4458a3;
+  --surf-lo: #d9e7e3;
+  --surf-hi: #0d7a6f;
+  --chip: #e4ecea;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1312; --panel: #131c1b; --ink: #e2ebe8; --muted: #93a4a0; --line: #253230;
+    --trace: #3fd1bd; --sample: #f0a33a; --input: #93a6f2; --surf-lo: #1b2b28; --surf-hi: #3fd1bd; --chip: #1c2927;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1312; --panel: #131c1b; --ink: #e2ebe8; --muted: #93a4a0; --line: #253230;
+  --trace: #3fd1bd; --sample: #f0a33a; --input: #93a6f2; --surf-lo: #1b2b28; --surf-hi: #3fd1bd; --chip: #1c2927;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 24px 16px 40px; display: grid; gap: 18px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 4vw, 38px); line-height: 1.05; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h1 .eq { font-family: var(--font-mono); font-weight: 500; font-size: 0.62em; color: var(--trace); letter-spacing: 0; display: block; margin-top: 6px; }
+.meta { color: var(--muted); font-size: 13px; text-align: right; }
+.meta b { color: var(--ink); font-weight: 600; }
+nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+nav button { font: inherit; text-align: left; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; min-width: 0; }
+nav button .n { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+nav button .t { font-family: var(--font-display); font-weight: 700; font-size: 15px; line-height: 1.2; }
+nav button[aria-selected="true"] { border-color: var(--trace); box-shadow: inset 0 -3px 0 var(--trace); }
+nav button:focus-visible, .ctrl button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--trace); outline-offset: 2px; }
+.main { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.stage-box { display: grid; gap: 10px; min-width: 0; }
+#stage { position: relative; height: clamp(360px, 64vh, 660px); border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: var(--bg); touch-action: none; }
+#stage canvas { display: block; width: 100%; height: 100%; }
+.hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); pointer-events: none; }
+.legend { position: absolute; top: 10px; left: 12px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; pointer-events: none; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 14px; height: 4px; border-radius: 2px; display: inline-block; }
+.readout { display: flex; flex-wrap: wrap; gap: 8px; }
+.readout div { background: var(--chip); border-radius: 6px; padding: 6px 10px; font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.readout div small { color: var(--muted); font-family: var(--font-body); font-size: 11px; display: block; letter-spacing: 0.02em; }
+.ctrl { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.ctrl label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; display: grid; gap: 4px; }
+.ctrl .row { display: flex; align-items: center; gap: 8px; }
+.ctrl output { font-family: var(--font-mono); font-size: 14px; color: var(--ink); min-width: 62px; font-variant-numeric: tabular-nums; text-transform: none; letter-spacing: 0; }
+.ctrl input[type=range] { width: 160px; accent-color: var(--trace); }
+.ctrl select { font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; text-transform: none; letter-spacing: 0; }
+.ctrl button { font: inherit; font-size: 14px; font-weight: 600; background: var(--trace); color: var(--panel); border: 0; border-radius: 6px; padding: 7px 14px; cursor: pointer; }
+.ctrl button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 500; }
+aside { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px 20px; min-width: 0; display: grid; gap: 12px; }
+aside h2 { font-family: var(--font-display); font-weight: 700; font-size: 21px; line-height: 1.2; margin: 0; text-wrap: balance; }
+aside h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 6px 0 0; font-weight: 600; }
+aside p { margin: 0; max-width: 62ch; }
+.eqn { font-family: var(--font-mono); font-size: 14px; background: var(--bg); border-left: 3px solid var(--trace); padding: 8px 12px; border-radius: 0 6px 6px 0; overflow-x: auto; white-space: nowrap; }
+.eqn.s { border-left-color: var(--sample); }
+.eqn sup { font-size: 0.72em; }
+.steps { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.steps li::marker { font-family: var(--font-mono); color: var(--muted); }
+.num { color: var(--sample); font-weight: 500; }
+.note { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; width: 100%; }
+th, td { padding: 4px 8px; text-align: right; border-bottom: 1px solid var(--line); }
+th { font-family: var(--font-body); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+td.ok { color: var(--trace); }
+.err { padding: 24px; color: var(--muted); }
+@media (max-width: 900px) {
+  .main { grid-template-columns: minmax(0, 1fr); }
+  nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .meta { text-align: left; }
+  #stage { height: clamp(320px, 56vh, 520px); }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Planta de primer orden en 3D <span class="eq" id="h-eq">dy/dt + 4y = u &nbsp;→&nbsp; G(s) = 1/(s+4) &nbsp;→&nbsp; G(z)</span></h1>
+    <div class="meta"><b>Diseño de controladores</b><br>Rolando Flores · Nicolás Garrido · Prof. Cristian Roque</div>
+  </header>
+
+  <nav role="tablist" aria-label="Etapas del desarrollo">
+    <button role="tab" id="tab-edo" data-tab="edo" aria-selected="true"><span class="n">Paso 1</span><span class="t">Ecuación diferencial</span></button>
+    <button role="tab" id="tab-lap" data-tab="lap" aria-selected="false"><span class="n">Paso 2</span><span class="t">Laplace · plano s</span></button>
+    <button role="tab" id="tab-zoh" data-tab="zoh" aria-selected="false"><span class="n">Paso 3</span><span class="t">Muestreo con ZOH</span></button>
+    <button role="tab" id="tab-z" data-tab="z" aria-selected="false"><span class="n">Paso 4</span><span class="t">Transformada Z · plano z</span></button>
+  </nav>
+
+  <div class="main">
+    <div class="stage-box">
+      <div id="stage">
+        <div class="legend" id="legend"></div>
+        <div class="hint">Arrastra para girar · rueda o pellizco para acercar</div>
+      </div>
+      <div class="readout" id="readout"></div>
+      <div class="ctrl">
+        <label for="sel-p">Planta
+          <select id="sel-p">
+            <option value="4" selected>1/(s+4) · informe</option>
+            <option value="2">1/(s+2) · carta Gantt</option>
+          </select>
+        </label>
+        <label for="rng-T">Período de muestreo T
+          <span class="row"><input type="range" id="rng-T" min="0.02" max="0.5" step="0.01" value="0.1"><output id="out-T">0,10 s</output></span>
+        </label>
+        <label for="rng-c">Cursor
+          <span class="row"><input type="range" id="rng-c" min="0" max="1" step="0.001" value="0"></span>
+        </label>
+        <span class="row">
+          <button id="btn-play" type="button">Pausar</button>
+          <button id="btn-view" type="button" class="ghost">Vista inicial</button>
+        </span>
+      </div>
+    </div>
+
+    <aside id="panel" aria-live="polite"></aside>
+  </div>
+</div>
+
+<template id="tpl-edo">
+  <h2>La planta responde al escalón</h2>
+  <p>La salida y(t) parte en cero y sube hasta estabilizarse. En la escena, la cinta azul del fondo es la entrada escalón u(t) = 1 y la curva verde es la salida.</p>
+  <div class="eqn">dy/dt + <span data-v="p"></span>·y(t) = u(t), &nbsp; y(0) = 0</div>
+  <h3>Solución con factor integrante</h3>
+  <ol class="steps">
+    <li>Multiplicar por e<sup><span data-v="p"></span>t</sup>: d/dt[e<sup><span data-v="p"></span>t</sup>·y] = e<sup><span data-v="p"></span>t</sup></li>
+    <li>Integrar desde 0: e<sup><span data-v="p"></span>t</sup>·y(t) = (e<sup><span data-v="p"></span>t</sup> − 1)/<span data-v="p"></span></li>
+    <li>Despejar la salida:</li>
+  </ol>
+  <div class="eqn">y(t) = (1 − e<sup>−<span data-v="p"></span>t</sup>) / <span data-v="p"></span></div>
+  <h3>Qué mirar en 3D</h3>
+  <p>La línea punteada horizontal es el valor final <span class="num" data-v="yinf"></span>. La línea vertical marca la constante de tiempo τ = <span class="num" data-v="tau"></span>: ahí la salida llega al 63,2 % del valor final. A 4τ ya supera el 98 %.</p>
+</template>
+
+<template id="tpl-lap">
+  <h2>La función de transferencia como un relieve</h2>
+  <p>Cada punto del suelo es un número complejo s = σ + jω. La altura del relieve es |G(s)| en escala logarítmica. Donde el denominador se anula aparece un pico: ese es el polo.</p>
+  <ol class="steps">
+    <li>Transformar: sY(s) − y(0) + <span data-v="p"></span>Y(s) = U(s)</li>
+    <li>Con y(0) = 0: (s + <span data-v="p"></span>)Y(s) = U(s)</li>
+  </ol>
+  <div class="eqn">G(s) = Y(s)/U(s) = 1 / (s + <span data-v="p"></span>)</div>
+  <h3>Lectura del relieve</h3>
+  <p>El pico está en s = <span class="num" data-v="pole"></span>, dentro de la zona sombreada del semiplano izquierdo, por eso la planta es estable. La curva verde sobre el eje jω es la respuesta en frecuencia |G(jω)|: vale <span class="num" data-v="yinf"></span> en ω = 0 (ganancia estática) y cae al alejarse.</p>
+  <h3>Comprobación con el escalón</h3>
+  <div class="eqn">Y(s) = 1/(s(s+<span data-v="p"></span>)) = (1/<span data-v="p"></span>)[1/s − 1/(s+<span data-v="p"></span>)]</div>
+  <p>La transformada inversa entrega la misma y(t) del paso 1.</p>
+</template>
+
+<template id="tpl-zoh">
+  <h2>Muestrear cada T segundos</h2>
+  <p>El retenedor de orden cero (ZOH) mantiene la entrada constante entre muestras. Así, la solución continua entre kT y (k+1)T da una ecuación en diferencias exacta. Los puntos naranjos caen exactamente sobre la curva continua.</p>
+  <div class="eqn s">y[k+1] = a·y[k] + b·u[k]</div>
+  <div class="eqn s">a = e<sup>−<span data-v="p"></span>T</sup> = <span data-v="a"></span> &nbsp; b = (1 − a)/<span data-v="p"></span> = <span data-v="b"></span></div>
+  <h3>Recurrencia frente a fórmula cerrada</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>k</th><th>kT [s]</th><th>a·y[k−1] + b</th><th>(1 − a<sup>k</sup>)/p</th></tr></thead>
+    <tbody id="tbl-body"></tbody>
+  </table></div>
+  <p class="note">Mueve el control de T: con T grande quedan pocas muestras y los escalones se ven toscos, pero cada muestra sigue sobre la curva. El ZOH no aproxima, solo decide cada cuánto se observa.</p>
+</template>
+
+<template id="tpl-z">
+  <h2>El mismo polo, ahora en el plano z</h2>
+  <p>Aplicando Z a la ecuación en diferencias con y[0] = 0:</p>
+  <ol class="steps">
+    <li>zY(z) = aY(z) + bU(z)</li>
+    <li>(z − a)Y(z) = bU(z)</li>
+  </ol>
+  <div class="eqn s">G(z) = b / (z − a) = <span data-v="b"></span> / (z − <span data-v="a"></span>)</div>
+  <h3>Lectura del relieve</h3>
+  <p>El pico está en z = a = <span class="num" data-v="a"></span>. El polo continuo s = <span data-v="pole"></span> se traslada con z = e<sup>sT</sup>. Para cualquier T &gt; 0 el valor a queda entre 0 y 1, dentro del círculo unitario, así que el sistema discreto es estable.</p>
+  <p>El anillo verde es |G(e<sup>jωT</sup>)|, la respuesta en frecuencia discreta. En z = 1 (ω = 0) vale b/(1 − a) = <span class="num" data-v="yinf"></span>, la misma ganancia estática que la planta continua.</p>
+  <div class="eqn s">Escalón: Y(z) = (1/<span data-v="p"></span>)[z/(z − 1) − z/(z − a)]</div>
+  <p class="note">Al subir T, el pico se desplaza hacia el origen (a → 0). Al bajar T, se acerca a z = 1 (a → 1).</p>
+</template>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const $ = s => document.querySelector(s);
+const fmt = (x, d = 3) => x.toFixed(d).replace('.', ',');
+const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const state = { tab: 'edo', p: 4, T: 0.1, phase: 0, playing: !reduce };
+try { const t = localStorage.getItem('planta3d-tab'); if (['edo','lap','zoh','z'].includes(t)) state.tab = t; } catch (e) {}
+if (['edo','lap','zoh','z'].includes(location.hash.slice(1))) state.tab = location.hash.slice(1);
+
+// ---------- renderer ----------
+const stage = $('#stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+stage.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 200);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI * 0.49;
+controls.minDistance = 4; controls.maxDistance = 30;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x556666, 1.3));
+const sun = new THREE.DirectionalLight(0xffffff, 1.5); sun.position.set(5, 10, 7); scene.add(sun);
+let world = new THREE.Group(); scene.add(world);
+let dyn = {};
+
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage);
+
+// ---------- theme ----------
+const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let P = {};
+function readPalette() {
+  for (const k of ['bg','ink','muted','line','trace','sample','input','surf-lo','surf-hi']) P[k] = new THREE.Color(tok('--' + k));
+  P.css = k => tok('--' + k);
+  scene.background = P.bg;
+}
+
+// ---------- helpers ----------
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+function add(o) { world.add(o); return o; }
+function line(pts, color, o = {}) {
+  const g = new THREE.BufferGeometry().setFromPoints(pts);
+  const m = o.dashed
+    ? new THREE.LineDashedMaterial({ color, dashSize: 0.14, gapSize: 0.09, transparent: true, opacity: o.opacity ?? 1 })
+    : new THREE.LineBasicMaterial({ color, transparent: true, opacity: o.opacity ?? 1 });
+  const l = new THREE.Line(g, m);
+  if (o.dashed) l.computeLineDistances();
+  return add(l);
+}
+function tube(pts, color, r = 0.04, o = {}) {
+  const curve = o.straight ? new THREE.LineCurve3(pts[0], pts[1]) : new THREE.CatmullRomCurve3(pts);
+  const g = new THREE.TubeGeometry(curve, o.straight ? 1 : Math.max(24, pts.length * 2), r, 10, false);
+  return add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color, roughness: 0.45, metalness: 0.05, transparent: !!o.opacity, opacity: o.opacity ?? 1 })));
+}
+function ball(pos, color, r = 0.09) {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14), new THREE.MeshStandardMaterial({ color, roughness: 0.3, emissive: color, emissiveIntensity: 0.25 }));
+  m.position.copy(pos); return add(m);
+}
+function box(x0, x1, h, z, d, color, opacity) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(Math.max(x1 - x0, 0.001), Math.max(h, 0.001), d),
+    new THREE.MeshStandardMaterial({ color, transparent: true, opacity, roughness: 0.6, depthWrite: false }));
+  m.position.set((x0 + x1) / 2, h / 2, z); return add(m);
+}
+function label(text, pos, color, size = 0.3, anchor = 'center') {
+  const fs = 64, pad = 12;
+  const c = document.createElement('canvas'); const ctx = c.getContext('2d');
+  const font = `500 ${fs}px "IBM Plex Mono", ui-monospace, monospace`;
+  ctx.font = font; const w = Math.ceil(ctx.measureText(text).width) + pad * 2;
+  c.width = w; c.height = fs + pad * 2;
+  ctx.font = font; ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.fillText(text, pad, c.height / 2 + 2);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true }));
+  const sw = size * w / c.height; s.scale.set(sw, size, 1);
+  s.center.set(anchor === 'left' ? 0 : anchor === 'right' ? 1 : 0.5, 0.5);
+  s.position.copy(pos); s.renderOrder = 10; return add(s);
+}
+function floor(x0, x1, z0, z1, step) {
+  const pts = [];
+  for (let x = Math.ceil(x0 / step) * step; x <= x1 + 1e-6; x += step) pts.push(V(x, 0, z0), V(x, 0, z1));
+  for (let z = Math.ceil(z0 / step) * step; z <= z1 + 1e-6; z += step) pts.push(V(x0, 0, z), V(x1, 0, z));
+  const g = new THREE.BufferGeometry().setFromPoints(pts);
+  add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: P.line })));
+}
+function surface(x0, x1, z0, z1, n, fn, hmax) {
+  const g = new THREE.PlaneGeometry(x1 - x0, z1 - z0, n, n); g.rotateX(-Math.PI / 2);
+  g.translate((x0 + x1) / 2, 0, (z0 + z1) / 2);
+  const pos = g.attributes.position, col = new Float32Array(pos.count * 3), c = new THREE.Color();
+  for (let i = 0; i < pos.count; i++) {
+    const h = fn(pos.getX(i), pos.getZ(i)); pos.setY(i, h);
+    c.copy(P['surf-lo']).lerp(P['surf-hi'], Math.pow(h / hmax, 0.8)); col.set([c.r, c.g, c.b], i * 3);
+  }
+  g.setAttribute('color', new THREE.BufferAttribute(col, 3)); g.computeVertexNormals();
+  add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: 0.75, transparent: true, opacity: 0.93 })));
+  const wf = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: P.ink, wireframe: true, transparent: true, opacity: 0.05 }));
+  add(wf);
+}
+function niceStep(range) { const raw = range / 6, e = Math.pow(10, Math.floor(Math.log10(raw))); const f = raw / e; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * e; }
+const coef = () => { const a = Math.exp(-state.p * state.T); return { a, b: (1 - a) / state.p }; };
+
+// ---------- escenas ----------
+function buildTime(zoh) {
+  const { p, T } = state, tEnd = 6 / p, yinf = 1 / p;
+  const X = t => -4 + 8 * t / tEnd, H = y => y * p * 3;
+  const zU = -1.8, zY = 0;
+  floor(-4.4, 4.6, -2.6, 1.4, 0.5);
+  // eje de tiempo
+  line([V(-4, 0, 1.1), V(4.5, 0, 1.1)], P.muted);
+  const st = niceStep(tEnd);
+  for (let t = 0; t <= tEnd + 1e-9; t += st) {
+    line([V(X(t), 0, 1.1), V(X(t), 0, 1.3)], P.muted);
+    label(fmt(t, st < 0.1 ? 2 : 2).replace(/,?0+$/, '').replace(/,$/, '') || '0', V(X(t), 0, 1.6), P.css('muted'), 0.26);
+  }
+  label('t [s]', V(4.75, 0, 1.1), P.css('muted'), 0.28, 'left');
+  // eje vertical
+  line([V(-4, 0, zY), V(-4, 3.6, zY)], P.muted);
+  for (const [y, txt] of [[0, '0'], [0.632 * yinf, fmt(0.632 * yinf, 3)], [yinf, fmt(yinf, 2)]]) {
+    line([V(-4.15, H(y), zY), V(-4, H(y), zY)], P.muted);
+    label(txt, V(-4.25, H(y), zY), P.css('muted'), 0.26, 'right');
+  }
+  label('y(t)', V(-4, 3.95, zY), P.css('trace'), 0.32);
+  // entrada escalón
+  const hu = 1.6;
+  if (zoh) {
+    for (let k = 0; k * T < tEnd - 1e-9; k++) box(X(k * T), X(Math.min((k + 1) * T, tEnd)), hu, zU, 0.35, P.input, 0.14);
+    label('u[k] = 1 retenido (ZOH)', V(X(0), hu + 0.35, zU), P.css('input'), 0.28, 'left');
+  } else {
+    tube([V(X(0), 0, zU), V(X(0), hu, zU)], P.input, 0.035, { straight: true });
+    tube([V(X(0), hu, zU), V(X(tEnd), hu, zU)], P.input, 0.035, { straight: true });
+    label('u(t) = 1  (escalón)', V(X(tEnd) + 0.1, hu + 0.35, zU), P.css('input'), 0.28, 'right');
+  }
+  // salida continua
+  const pts = []; for (let i = 0; i <= 200; i++) { const t = tEnd * i / 200; pts.push(V(X(t), H((1 - Math.exp(-p * t)) / p), zY)); }
+  tube(pts, P.trace, zoh ? 0.025 : 0.05, zoh ? { opacity: 0.55 } : {});
+  // valor final y tau
+  line([V(-4, H(yinf), zY), V(4.5, H(yinf), zY)], P.muted, { dashed: true });
+  label('y∞ = 1/' + p + ' = ' + fmt(yinf, 2), V(4.5, H(yinf) + 0.3, zY), P.css('ink'), 0.28, 'right');
+  line([V(X(1 / p), 0, zY), V(X(1 / p), H(0.632 * yinf), zY)], P.sample, { dashed: true });
+  line([V(-4, H(0.632 * yinf), zY), V(X(1 / p), H(0.632 * yinf), zY)], P.sample, { dashed: true, opacity: 0.5 });
+  label('τ = ' + fmt(1 / p, 2) + ' s → 63,2 %', V(X(1 / p) + 0.12, 0.35, zY + 0.2), P.css('sample'), 0.26, 'left');
+  // muestras
+  dyn.samples = [];
+  if (zoh) {
+    const { a, b } = coef(); let y = 0;
+    for (let k = 0; k * T <= tEnd + 1e-9; k++) {
+      const x = X(k * T), x1 = X(Math.min((k + 1) * T, tEnd));
+      if (k * T < tEnd - 1e-9) box(x, x1, H(y), zY + 0.45, 0.3, P.sample, 0.18);
+      line([V(x, 0, zY), V(x, H(y), zY)], P.sample, { opacity: 0.8 });
+      dyn.samples.push({ ball: ball(V(x, H(y), zY), P.sample, 0.07), y });
+      y = a * y + b;
+    }
+    label('y[k] retenido', V(X(tEnd) + 0.1, 0.5, zY + 0.45), P.css('sample'), 0.26, 'right');
+  }
+  dyn.cursor = ball(V(X(0), 0, zY), P.ink, 0.1);
+  dyn.cursorLine = line([V(0, 0, zY), V(0, 1, zY)], P.ink, { opacity: 0.35 });
+  dyn.update = ph => {
+    const t = Math.min(ph * 1.15, 1) * tEnd, y = (1 - Math.exp(-p * t)) / p;
+    dyn.cursor.position.set(X(t), H(y), zY);
+    dyn.cursorLine.geometry.setFromPoints([V(X(t), 0, zY), V(X(t), H(y), zY)]);
+    const out = [['t', fmt(t, 3) + ' s'], ['y(t)', fmt(y, 4)], ['% del final', fmt(100 * y / yinf, 1) + ' %']];
+    if (zoh) {
+      const k = Math.min(Math.floor(t / T + 1e-9), dyn.samples.length - 1);
+      dyn.samples.forEach((s, i) => s.ball.scale.setScalar(i === k ? 1.8 : 1));
+      out.push(['k', String(k)], ['y[k]', fmt(dyn.samples[k].y, 4)]);
+    }
+    return out;
+  };
+  return { cam: V(2.2, 5.2, 10.5), target: V(0, 1.3, -0.3) };
+}
+
+function buildS() {
+  const p = state.p, sc = 0.72, s0 = -8, s1 = 2, w0 = -6, w1 = 6, cx = (s0 + s1) / 2;
+  const X = s => (s - cx) * sc, Z = w => -w * sc, hmax = 3.6;
+  const h = (s, w) => clamp(1.5 * (Math.log10(1 / Math.hypot(s + p, w)) + 1.15), 0, hmax);
+  floor(X(s0), X(s1), Z(w1), Z(w0), 0.72);
+  // semiplano estable
+  const lhp = new THREE.Mesh(new THREE.PlaneGeometry(X(0) - X(s0), Z(w0) - Z(w1)), new THREE.MeshBasicMaterial({ color: P.trace, transparent: true, opacity: 0.08, side: THREE.DoubleSide, depthWrite: false }));
+  lhp.rotateX(-Math.PI / 2); lhp.position.set((X(s0) + X(0)) / 2, 0.005, 0); add(lhp);
+  label('semiplano izquierdo: estable', V(X(s0) + 0.2, 0.05, Z(w0) - 0.35), P.css('trace'), 0.26, 'left');
+  surface(X(s0), X(s1), Z(w1), Z(w0), 150, (x, z) => h(x / sc + cx, -z / sc), hmax);
+  // ejes
+  line([V(X(s0), 0.01, 0), V(X(s1) + 0.3, 0.01, 0)], P.ink, { opacity: 0.6 });
+  line([V(X(0), 0.01, Z(w0)), V(X(0), 0.01, Z(w1) - 0.3)], P.ink, { opacity: 0.6 });
+  for (let s = s0; s <= s1; s += 2) label(String(s).replace('-', '−'), V(X(s), 0, Z(w0) + 0.45), P.css('muted'), 0.26);
+  for (let w = w0; w <= w1; w += 2) if (w) label(String(w).replace('-', '−'), V(X(s1) + 0.35, 0, Z(w)), P.css('muted'), 0.26, 'left');
+  label('σ = Re(s)', V(X(s1) + 0.5, 0, 0.35), P.css('ink'), 0.28, 'left');
+  label('jω = Im(s)', V(X(0), 0, Z(w1) - 0.6), P.css('ink'), 0.28);
+  // polo
+  line([V(X(-p), 0, 0), V(X(-p), hmax + 0.3, 0)], P.sample, { dashed: true });
+  for (const r of [Math.PI / 4, -Math.PI / 4]) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.04, 0.06), new THREE.MeshBasicMaterial({ color: P.sample })); m.position.set(X(-p), 0.03, 0); m.rotation.y = r; add(m); }
+  label('polo s = −' + p, V(X(-p), hmax + 0.6, 0), P.css('sample'), 0.32);
+  // respuesta en frecuencia sobre jω
+  const pts = []; for (let i = 0; i <= 160; i++) { const w = w0 + (w1 - w0) * i / 160; pts.push(V(X(0), h(0, w) + 0.03, Z(w))); }
+  tube(pts, P.trace, 0.045);
+  label('|G(jω)|', V(X(0) + 0.2, h(0, 0) + 0.55, 0), P.css('trace'), 0.3, 'left');
+  dyn.cursor = ball(V(0, 0, 0), P.ink, 0.1);
+  dyn.update = ph => {
+    const tri = 1 - Math.abs(2 * ph - 1), w = w0 + (w1 - w0) * tri;
+    dyn.cursor.position.set(X(0), h(0, w) + 0.03, Z(w));
+    const g = 1 / Math.hypot(p, w);
+    return [['ω', fmt(w, 2) + ' rad/s'], ['|G(jω)|', fmt(g, 4)], ['en dB', fmt(20 * Math.log10(g), 1) + ' dB'], ['fase', fmt(-Math.atan2(w, p) * 180 / Math.PI, 1) + '°']];
+  };
+  return { cam: V(6.5, 8.5, 11.5), target: V(0, 0.8, 0) };
+}
+
+function buildZ() {
+  const { p, T } = state, { a, b } = coef(), sc = 2.5, L = 1.6, hmax = 4.6;
+  const X = re => re * sc, Z = im => -im * sc;
+  const h = (re, im) => clamp(1.4 * (Math.log10(p * b / Math.hypot(re - a, im)) + 1.3), 0, hmax);
+  floor(X(-L), X(L), Z(L), Z(-L), sc / 4);
+  surface(X(-L), X(L), Z(L), Z(-L), 160, (x, z) => h(x / sc, -z / sc), hmax);
+  line([V(X(-L), 0.01, 0), V(X(L) + 0.3, 0.01, 0)], P.ink, { opacity: 0.6 });
+  line([V(0, 0.01, Z(-L)), V(0, 0.01, Z(L) - 0.3)], P.ink, { opacity: 0.6 });
+  for (const v of [-1, 1]) { label(String(v).replace('-', '−'), V(X(v), 0, Z(-L) + 0.4), P.css('muted'), 0.26); label((v > 0 ? '' : '−') + 'j', V(X(L) + 0.35, 0, Z(v)), P.css('muted'), 0.26, 'left'); }
+  label('Re(z)', V(X(L) + 0.5, 0, 0.35), P.css('ink'), 0.28, 'left');
+  label('Im(z)', V(0, 0, Z(L) - 0.6), P.css('ink'), 0.28);
+  // círculo unitario en el suelo y sobre el relieve
+  const floorC = [], surfC = [];
+  for (let i = 0; i <= 240; i++) { const th = 2 * Math.PI * i / 240, c = Math.cos(th), s = Math.sin(th); floorC.push(V(X(c), 0.02, Z(s))); surfC.push(V(X(c), h(c, s) + 0.03, Z(s))); }
+  line(floorC, P.ink, { dashed: true, opacity: 0.7 });
+  tube(surfC, P.trace, 0.045);
+  label('|z| = 1', V(X(-0.72), 0.05, Z(-0.72) + 0.25), P.css('muted'), 0.26);
+  // trayectoria del polo al variar T
+  tube([V(X(0), 0.04, 0), V(X(1), 0.04, 0)], P.sample, 0.02, { straight: true, opacity: 0.5 });
+  label('a = e^(−' + p + 'T):  T→∞ ⇒ 0   T→0 ⇒ 1', V(X(0.5), 0.05, 0.75), P.css('sample'), 0.24);
+  // polo
+  line([V(X(a), 0, 0), V(X(a), hmax + 0.3, 0)], P.sample, { dashed: true });
+  for (const r of [Math.PI / 4, -Math.PI / 4]) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.04, 0.06), new THREE.MeshBasicMaterial({ color: P.sample })); m.position.set(X(a), 0.05, 0); m.rotation.y = r; add(m); }
+  label('polo z = ' + fmt(a, 3), V(X(a), hmax + 0.6, 0), P.css('sample'), 0.32);
+  label('z = 1 · ω = 0', V(X(1) + 0.15, h(1, 0) + 0.45, 0), P.css('trace'), 0.26, 'left');
+  dyn.cursor = ball(V(0, 0, 0), P.ink, 0.1);
+  dyn.update = ph => {
+    const th = Math.PI * (1 - Math.abs(2 * ph - 1)), c = Math.cos(th), s = Math.sin(th);
+    dyn.cursor.position.set(X(c), h(c, s) + 0.03, Z(s));
+    const w = th / T, gz = b / Math.hypot(c - a, s), gs = 1 / Math.hypot(p, w);
+    return [['ωT', fmt(th, 2) + ' rad'], ['ω', fmt(w, 1) + ' rad/s'], ['|G(e^jωT)|', fmt(gz, 4)], ['|G(jω)| continua', fmt(gs, 4)]];
+  };
+  return { cam: V(6, 8, 9.5), target: V(0, 0.8, 0) };
+}
+
+// ---------- ensamblado ----------
+let view = null, lastKey = '';
+function disposeWorld() {
+  world.traverse(o => { o.geometry?.dispose(); const m = o.material; if (m) { (Array.isArray(m) ? m : [m]).forEach(x => { x.map?.dispose(); x.dispose(); }); } });
+  scene.remove(world); world = new THREE.Group(); scene.add(world); dyn = {};
+}
+function build(resetCam) {
+  readPalette(); disposeWorld();
+  view = state.tab === 'edo' ? buildTime(false) : state.tab === 'zoh' ? buildTime(true) : state.tab === 'lap' ? buildS() : buildZ();
+  const key = state.tab + state.p;
+  if (resetCam || key !== lastKey) { camera.position.copy(view.cam); controls.target.copy(view.target); controls.update(); }
+  lastKey = key;
+  legend(); panel(); tick(0, true);
+}
+function legend() {
+  const items = {
+    edo: [['input', 'entrada u(t)'], ['trace', 'salida y(t)'], ['sample', 'constante de tiempo τ']],
+    zoh: [['input', 'u[k] retenido'], ['trace', 'y(t) continua'], ['sample', 'muestras y[k]']],
+    lap: [['surf-hi', '|G(s)| (log)'], ['trace', '|G(jω)|'], ['sample', 'polo']],
+    z: [['surf-hi', '|G(z)| (log)'], ['trace', '|G(e^jωT)| en |z| = 1'], ['sample', 'polo a']],
+  }[state.tab];
+  $('#legend').innerHTML = items.map(([c, t]) => `<span><i style="background:var(--${c})"></i>${t}</span>`).join('');
+}
+function panel() {
+  const el = $('#panel'); el.replaceChildren($('#tpl-' + state.tab).content.cloneNode(true));
+  const { a, b } = coef(), p = state.p;
+  const vals = { p: String(p), a: fmt(a, 4), b: fmt(b, 4), yinf: fmt(1 / p, 2), tau: fmt(1 / p, 2) + ' s', pole: '−' + p };
+  el.querySelectorAll('[data-v]').forEach(s => { s.textContent = vals[s.dataset.v]; });
+  const tb = el.querySelector('#tbl-body');
+  if (tb) {
+    let y = 0, rows = '';
+    for (let k = 0; k <= 8; k++) {
+      const cf = (1 - Math.pow(a, k)) / p;
+      rows += `<tr><td>${k}</td><td>${fmt(k * state.T, 2)}</td><td>${fmt(y, 5)}</td><td class="${Math.abs(cf - y) < 1e-12 ? 'ok' : ''}">${fmt(cf, 5)}</td></tr>`;
+      y = a * y + b;
+    }
+    tb.innerHTML = rows;
+  }
+  $('#h-eq').textContent = `dy/dt + ${p}y = u  →  G(s) = 1/(s+${p})  →  G(z) = ${fmt(b, 4)}/(z − ${fmt(a, 4)})`;
+}
+function tick(dt, force) {
+  if (state.playing && dt) { state.phase = (state.phase + dt / 8) % 1; $('#rng-c').value = state.phase; }
+  if (!dyn.update) return;
+  const out = dyn.update(state.phase);
+  if (force || state.playing || tick.dirty) {
+    $('#readout').innerHTML = out.map(([k, v]) => `<div><small>${k}</small>${v}</div>`).join('');
+    tick.dirty = false;
+  }
+}
+
+// ---------- controles ----------
+function setTab(t) {
+  state.tab = t;
+  document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+  try { localStorage.setItem('planta3d-tab', t); } catch (e) {}
+  build(true);
+}
+document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+$('#sel-p').addEventListener('change', e => { state.p = +e.target.value; build(false); });
+$('#rng-T').addEventListener('input', e => { state.T = +e.target.value; $('#out-T').textContent = fmt(state.T, 2) + ' s'; build(false); });
+$('#rng-c').addEventListener('input', e => { state.phase = +e.target.value; state.playing = false; $('#btn-play').textContent = 'Reproducir'; tick.dirty = true; tick(0, true); });
+$('#btn-play').addEventListener('click', () => { state.playing = !state.playing; $('#btn-play').textContent = state.playing ? 'Pausar' : 'Reproducir'; });
+$('#btn-view').addEventListener('click', () => { camera.position.copy(view.cam); controls.target.copy(view.target); controls.update(); });
+$('#btn-play').textContent = state.playing ? 'Pausar' : 'Reproducir';
+new MutationObserver(() => build(false)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => build(false));
+
+document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === state.tab)));
+resize(); build(true);
+document.fonts?.ready.then(() => build(false));
+
+let last = performance.now();
+renderer.setAnimationLoop(now => {
+  const dt = Math.min((now - last) / 1000, 0.1); last = now;
+  tick(dt); controls.update(); renderer.render(scene, camera);
+});
+</script>
+<noscript><p class="err">Esta simulación necesita JavaScript y WebGL.</p></noscript>
+
+</html>
