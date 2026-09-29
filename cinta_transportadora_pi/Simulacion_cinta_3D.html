@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>Cinta transportadora PI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: banco de pruebas. Escena 3D de la cinta y el Arduino arriba, panel de mando al lado, osciloscopio y monitor serie abajo. */
+:root {
+  --bg: #eef2f1;
+  --panel: #ffffff;
+  --ink: #14201e;
+  --muted: #56655f;
+  --line: #d3dcd9;
+  --trace: #0d7a6f;
+  --sample: #b8540f;
+  --input: #4458a3;
+  --chip: #e4ecea;
+  --good: #1f7a3a;
+  --bad: #b3261e;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1312; --panel: #131c1b; --ink: #e2ebe8; --muted: #93a4a0; --line: #253230;
+    --trace: #3fd1bd; --sample: #f0a33a; --input: #93a6f2; --chip: #1c2927; --good: #6bd08a; --bad: #ff8a80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1312; --panel: #131c1b; --ink: #e2ebe8; --muted: #93a4a0; --line: #253230;
+  --trace: #3fd1bd; --sample: #f0a33a; --input: #93a6f2; --chip: #1c2927; --good: #6bd08a; --bad: #ff8a80;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 18px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 4vw, 38px); line-height: 1.05; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h1 .eq { font-family: var(--font-mono); font-weight: 500; font-size: 0.5em; color: var(--trace); letter-spacing: 0; display: block; margin-top: 8px; }
+.meta { color: var(--muted); font-size: 13px; text-align: right; }
+.meta b { color: var(--ink); font-weight: 600; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.2; margin: 0; text-wrap: balance; }
+h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.main { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+#stage { position: relative; height: clamp(360px, 62vh, 640px); border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: var(--bg); touch-action: none; }
+#stage canvas { display: block; width: 100%; height: 100%; }
+.hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); pointer-events: none; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; display: grid; gap: 12px; }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.kpi { background: var(--chip); border-radius: 6px; padding: 8px 10px; font-variant-numeric: tabular-nums; }
+.kpi small { display: block; font-size: 11px; color: var(--muted); letter-spacing: 0.02em; }
+.kpi b { font-family: var(--font-mono); font-weight: 500; font-size: 18px; }
+.kpi span { font-size: 12px; color: var(--muted); }
+.field { display: grid; gap: 4px; }
+.field label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; display: flex; justify-content: space-between; gap: 8px; }
+.field output { font-family: var(--font-mono); color: var(--ink); text-transform: none; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; accent-color: var(--trace); }
+select { font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; width: 100%; }
+.gains { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+button { font: inherit; font-size: 14px; font-weight: 600; background: var(--trace); color: var(--panel); border: 0; border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 500; }
+button[aria-pressed="true"].ghost { border-color: var(--trace); box-shadow: inset 0 0 0 1px var(--trace); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--trace); outline-offset: 2px; }
+.mode { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--good); display: inline-block; }
+.dot.off { background: var(--bad); }
+.scope { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 18px; }
+#chart { width: 100%; height: 260px; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 16px; height: 3px; border-radius: 2px; display: inline-block; }
+#serial { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; background: var(--bg); border-radius: 6px; padding: 10px 12px; margin: 0; height: 260px; overflow: hidden; white-space: pre; font-variant-numeric: tabular-nums; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 13.5px; width: 100%; }
+th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+td code, p code, li code { font-family: var(--font-mono); font-size: 0.92em; background: var(--chip); padding: 1px 5px; border-radius: 4px; }
+.wire { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.code-box { position: relative; }
+.code-box pre { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; background: var(--bg); border-radius: 6px; padding: 14px; margin: 0; max-height: 460px; overflow: auto; }
+.code-box button { position: absolute; top: 8px; right: 8px; }
+.check { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.check li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; }
+.check .ic { font-weight: 700; font-family: var(--font-mono); }
+.check .ok { color: var(--good); }
+.check .no { color: var(--bad); }
+.check .mid { color: var(--sample); }
+.verdict { border-left: 3px solid var(--sample); padding: 8px 12px; background: var(--bg); border-radius: 0 6px 6px 0; }
+@media (max-width: 900px) {
+  .main, .scope, .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .meta { text-align: left; }
+  #stage { height: clamp(320px, 55vh, 500px); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Cinta transportadora con control PI <span class="eq" id="h-eq">Arduino UNO · T = 0,1 s · ZOH · G(s) = 1/(s+4)</span></h1>
+    <div class="meta"><b>Diseño de controladores</b><br>Rolando Flores · Nicolás Garrido · Prof. Cristian Roque</div>
+  </header>
+
+  <div class="main">
+    <div id="stage">
+      <div class="hint">Arrastra para girar · rueda o pellizco para acercar</div>
+    </div>
+
+    <div class="card">
+      <div class="mode"><span class="dot" id="dot"></span><span id="mode-txt">Lazo cerrado · PI en marcha</span></div>
+      <div class="kpis">
+        <div class="kpi"><small>Velocidad del rodillo</small><b id="k-y">0,00</b> <span>rev/s</span></div>
+        <div class="kpi"><small>Velocidad de la cinta</small><b id="k-v">0,0</b> <span>cm/s</span></div>
+        <div class="kpi"><small>Tensión al motor</small><b id="k-u">0,0</b> <span>V</span></div>
+        <div class="kpi"><small>PWM en D9</small><b id="k-pwm">0</b> <span>/ 255</span></div>
+        <div class="kpi"><small>Error r − y</small><b id="k-e">0,00</b> <span>rev/s</span></div>
+        <div class="kpi"><small>Cajas contadas (IR)</small><b id="k-n">0</b> <span>sobre la cinta: <span id="k-on">0</span></span></div>
+      </div>
+      <div class="field">
+        <label for="rng-r">Referencia (potenciómetro A0) <output id="o-r">2,00 rev/s</output></label>
+        <input type="range" id="rng-r" min="0" max="2.8" step="0.01" value="2">
+      </div>
+      <div class="gains">
+        <div class="field">
+          <label for="rng-kp">Kp <output id="o-kp">3,0</output></label>
+          <input type="range" id="rng-kp" min="0" max="12" step="0.1" value="3">
+        </div>
+        <div class="field">
+          <label for="rng-ki">Ki <output id="o-ki">15</output></label>
+          <input type="range" id="rng-ki" min="0" max="60" step="0.5" value="15">
+        </div>
+      </div>
+      <div class="field">
+        <label for="sel-p">Planta del motor</label>
+        <select id="sel-p">
+          <option value="4" selected>1/(s+4) · informe (τ = 0,25 s)</option>
+          <option value="2">1/(s+2) · carta Gantt (τ = 0,5 s)</option>
+        </select>
+      </div>
+      <div class="btns">
+        <button id="b-box" type="button">Poner caja</button>
+        <button id="b-auto" type="button" class="ghost" aria-pressed="true">Cajas automáticas</button>
+        <button id="b-loop" type="button" class="ghost" aria-pressed="false">Lazo abierto</button>
+        <button id="b-run" type="button" class="ghost">Parar (D4)</button>
+        <button id="b-reset" type="button" class="ghost">Reiniciar</button>
+      </div>
+      <p style="font-size:13px;color:var(--muted)">Cada caja agrega carga al motor. Con el PI la velocidad vuelve a la referencia. En lazo abierto la cinta se frena y no se recupera.</p>
+    </div>
+  </div>
+
+  <div class="scope">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
+        <h3>Osciloscopio · últimos 10 s</h3>
+        <div class="legend">
+          <span><i style="background:var(--muted)"></i>referencia r</span>
+          <span><i style="background:var(--trace)"></i>velocidad y (encoder)</span>
+          <span><i style="background:var(--sample)"></i>tensión u (eje derecho)</span>
+        </div>
+      </div>
+      <canvas id="chart" aria-label="Gráfico de referencia, velocidad y tensión en los últimos 10 segundos"></canvas>
+    </div>
+    <div class="card">
+      <h3>Monitor serie · 115200 baudios</h3>
+      <pre id="serial"></pre>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Qué pasa en cada período T = 0,1 s</h2>
+      <ol style="margin:0;padding-left:20px;display:grid;gap:6px">
+        <li><b>Medir.</b> El Arduino cuenta los pulsos del encoder en D2 durante 0,1 s y calcula y = pulsos / (374 · 0,1) rev/s.</li>
+        <li><b>Comparar.</b> Lee la referencia r del potenciómetro en A0 y calcula el error e = r − y.</li>
+        <li><b>Controlar.</b> Actualiza la integral I ← I + Ki·T·e y calcula u = Kp·e + I, limitada entre 0 y 12 V. Si u está saturada, deja de integrar (anti-windup).</li>
+        <li><b>Retener (ZOH).</b> Escribe el PWM en D9 y lo mantiene fijo hasta la próxima muestra. El L298N entrega al motor una tensión media u.</li>
+        <li><b>Planta.</b> El motor y el rodillo responden como el modelo del informe: dy/dt + 4y = u − carga.</li>
+      </ol>
+      <p>Con la planta 1/(s+4), Kp = 3 y Ki = 15 dejan los dos polos de lazo cerrado en z = 0,65. La velocidad llega a la referencia en cerca de 1 s y sin sobrepaso. Con 1/(s+2), las mismas ganancias producen un sobrepaso de alrededor de 12 %.</p>
+    </div>
+    <div class="card">
+      <h2>Conexiones en la protoboard</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Arduino UNO</th><th>Va a</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td><span class="wire" style="background:#e0b100"></span><code>D9</code></td><td>L298N <code>ENA</code> (sin jumper)</td><td>PWM, tensión media al motor</td></tr>
+          <tr><td><span class="wire" style="background:#8a55c7"></span><code>D7</code> · <code>D8</code></td><td>L298N <code>IN1</code> · <code>IN2</code></td><td>Sentido de giro (HIGH, LOW)</td></tr>
+          <tr><td><span class="wire" style="background:#2e9a52"></span><code>D2</code></td><td>Encoder, canal A</td><td>Medición de velocidad (interrupción)</td></tr>
+          <tr><td><span class="wire" style="background:#2f6fd1"></span><code>A0</code></td><td>Cursor del potenciómetro 10 kΩ</td><td>Referencia de velocidad</td></tr>
+          <tr><td><code>D4</code></td><td>Pulsador a GND</td><td>Marcha / parada</td></tr>
+          <tr><td><code>D5</code></td><td>Sensor IR (salida OUT)</td><td>Cuenta cajas (opcional)</td></tr>
+          <tr><td><span class="wire" style="background:#d33"></span><code>5V</code></td><td>Riel + de la protoboard</td><td>Potenciómetro, encoder, sensor IR</td></tr>
+          <tr><td><span class="wire" style="background:#222"></span><code>GND</code></td><td>Riel − · GND del L298N · − de la fuente</td><td>Tierra común (obligatoria)</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted)">La fuente de 12 V va al borne <code>12V</code> del L298N. <code>OUT1</code> y <code>OUT2</code> van al motor. No alimentes el motor desde el pin 5V del Arduino.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>¿Corresponde a lo que adjuntaste?</h2>
+    <p class="verdict">En parte. La matemática del informe sirve para la cinta, porque la velocidad de un motor DC se comporta como un sistema de primer orden. Pero el documento nunca menciona una cinta transportadora, y varias secciones dicen lo contrario a construir un equipo físico. Hay que ajustarlo antes de entregarlo.</p>
+    <div class="grid2">
+      <div>
+        <h3 style="margin-bottom:10px">Lo que sí calza</h3>
+        <ul class="check">
+          <li><span class="ic ok">✓</span><span>El modelo de primer orden dy/dt + 4y = u describe la velocidad del motor. Se interpreta u como tensión [V] e y como velocidad del rodillo [rev/s]: ganancia 0,25 (rev/s)/V y τ = 0,25 s.</span></li>
+          <li><span class="ic ok">✓</span><span>El ZOH del informe es lo que hace el Arduino: el PWM queda fijo entre muestras. La ecuación y[k+1] = a·y[k] + b·u[k] es la que simula esta página.</span></li>
+          <li><span class="ic ok">✓</span><span>La carta Gantt ya incluye PI digital en Arduino con T = 0,1 s y anti-windup (3.2), medir ganancia y constante de tiempo (3.3), pruebas con escalón (4.1) y ajuste de Kp y Ki (4.2).</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px">Lo que no calza o falta</h3>
+        <ul class="check">
+          <li><span class="ic no">✗</span><span>La planta de la carta Gantt es un <b>circuito RC</b> (1.2, 2.3, 3.1), no un motor con cinta. Si la cinta es el proyecto, esas actividades deben cambiar a motor, driver y encoder.</span></li>
+          <li><span class="ic no">✗</span><span>La sección 1 dice que no se construye equipo físico ni se sintoniza un controlador. La sección 8 dice que no se requieren componentes electrónicos. Ambas contradicen el proyecto con Arduino.</span></li>
+          <li><span class="ic no">✗</span><span>El informe no calcula Kp ni Ki. Falta una sección de diseño del PI (por ejemplo, Kp = 3 y Ki = 15 con polos en z = 0,65).</span></li>
+          <li><span class="ic mid">!</span><span>El informe usa 1/(s+4) y la Gantt 1/(s+2). El motor real tendrá otra ganancia y otra τ: hay que medirlas (3.3) y recalcular a, b, Kp y Ki.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:8px">Materiales que faltan en la sección 8</h3>
+      <p>Arduino UNO y cable USB · protoboard y cables jumper · motor DC 12 V con reductora y encoder Hall (por ejemplo JGA25-370) · driver L298N · fuente 12 V 2 A · potenciómetro 10 kΩ · pulsador · sensor IR de obstáculos (opcional) · cinta (tela o goma), dos rodillos de 3 cm y una estructura de madera o MDF.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+      <h2>Código para el Arduino</h2>
+      <span style="font-size:13px;color:var(--muted)">cinta_transportadora_pi.ino · ábrelo en el Serial Plotter para ver r, y, u</span>
+    </div>
+    <div class="code-box">
+      <button type="button" id="b-copy">Copiar</button>
+      <pre id="code">/*
+  Control PI digital de velocidad para una cinta transportadora
+  Diseño de controladores · Rolando Flores, Nicolás Garrido
+
+  Planta supuesta (informe): G(s) = 1/(s + 4)  -&gt;  K = 0,25 (rev/s)/V, tau = 0,25 s
+  Muestreo con ZOH: T = 0,1 s  -&gt;  a = e^(-4T) = 0,6703, b = (1 - a)/4 = 0,0824
+  PI discreto: u[k] = Kp*e[k] + I[k],  I[k] = I[k-1] + Ki*T*e[k]
+  Ganancias iniciales: Kp = 3 V/(rev/s), Ki = 15 V/(rev/s)/s
+  (polos de lazo cerrado en z = 0,65 doble: sin sobrepaso con la planta 1/(s+4)).
+  Hay que reajustarlas cuando se mida la planta real (actividades 3.3 y 4.2).
+
+  Conexiones (Arduino UNO + L298N + motor DC 12 V con encoder Hall):
+    D9  -&gt; ENA del L298N (PWM, sacar el jumper de ENA)
+    D7  -&gt; IN1,  D8 -&gt; IN2   (sentido de giro)
+    D2  -&gt; canal A del encoder (interrupción INT0)
+    A0  -&gt; cursor del potenciómetro 10 k (referencia de velocidad)
+    D4  -&gt; pulsador a GND (marcha / parada)
+    D5  -&gt; salida del sensor IR de cajas (opcional)
+    GND del Arduino, del L298N y de la fuente de 12 V unidos.
+*/
+
+// ---------- pines ----------
+const byte PIN_PWM = 9;
+const byte PIN_IN1 = 7;
+const byte PIN_IN2 = 8;
+const byte PIN_ENC_A = 2;
+const byte PIN_POT = A0;
+const byte PIN_BOTON = 4;
+const byte PIN_IR = 5;
+const byte PIN_LED = 13;
+
+// ---------- parámetros ----------
+const float T = 0.1;                     // período de muestreo [s]
+const unsigned long T_US = 100000UL;     // el mismo período en microsegundos
+const float PULSOS_POR_VUELTA = 11.0 * 34.0;  // 11 PPR del encoder x reducción 1:34 (ajustar a tu motor)
+const float V_FUENTE = 12.0;             // tensión de la fuente del motor [V]
+const float REF_MAX = 2.8;               // referencia máxima [rev/s] del rodillo
+const float DIAMETRO_RODILLO_CM = 3.0;
+
+float Kp = 3.0;   // V por (rev/s)
+float Ki = 15.0;  // V por (rev/s) por segundo
+
+// ---------- estado ----------
+volatile long pulsos = 0;
+float integral = 0;
+bool enMarcha = true;
+bool irAnterior = HIGH;
+unsigned long cajas = 0;
+unsigned long tSiguiente;
+
+void contarPulso() { pulsos++; }
+
+void setup() {
+  pinMode(PIN_PWM, OUTPUT);
+  pinMode(PIN_IN1, OUTPUT);
+  pinMode(PIN_IN2, OUTPUT);
+  pinMode(PIN_ENC_A, INPUT_PULLUP);
+  pinMode(PIN_BOTON, INPUT_PULLUP);
+  pinMode(PIN_IR, INPUT_PULLUP);
+  pinMode(PIN_LED, OUTPUT);
+
+  digitalWrite(PIN_IN1, HIGH);  // la cinta avanza en un solo sentido
+  digitalWrite(PIN_IN2, LOW);
+  attachInterrupt(digitalPinToInterrupt(PIN_ENC_A), contarPulso, RISING);
+
+  Serial.begin(115200);
+  Serial.println(F(&quot;ref_rev_s,vel_rev_s,u_V&quot;));  // encabezado para el Serial Plotter
+  tSiguiente = micros() + T_US;
+}
+
+void loop() {
+  leerBoton();
+  contarCajas();
+
+  // El lazo se ejecuta exactamente cada T: muestreo + ZOH (el PWM queda fijo hasta la próxima muestra)
+  if ((long)(micros() - tSiguiente) &lt; 0) return;
+  tSiguiente += T_US;
+
+  // 1) Medir: pulsos contados durante el último período
+  noInterrupts();
+  long n = pulsos;
+  pulsos = 0;
+  interrupts();
+  float y = n / (PULSOS_POR_VUELTA * T);  // velocidad del rodillo [rev/s]
+
+  // 2) Referencia desde el potenciómetro
+  float r = enMarcha ? analogRead(PIN_POT) * (REF_MAX / 1023.0) : 0.0;
+
+  // 3) PI con saturación y anti-windup (integración condicional)
+  float e = r - y;
+  float iNueva = integral + Ki * T * e;
+  float u = Kp * e + iNueva;
+  if (u &gt; V_FUENTE) {
+    u = V_FUENTE;
+    if (e &lt; 0) integral = iNueva;       // solo integra si ayuda a salir de la saturación
+  } else if (u &lt; 0) {
+    u = 0;
+    if (e &gt; 0) integral = iNueva;
+  } else {
+    integral = iNueva;
+  }
+  if (!enMarcha) { u = 0; integral = 0; }
+
+  // 4) Actuar: tensión media al motor mediante PWM
+  analogWrite(PIN_PWM, (int)(u / V_FUENTE * 255.0 + 0.5));
+
+  // 5) Registrar para comparar con la simulación (actividad 4.3)
+  Serial.print(r, 3); Serial.print(&#x27;,&#x27;);
+  Serial.print(y, 3); Serial.print(&#x27;,&#x27;);
+  Serial.println(u, 2);
+}
+
+void leerBoton() {
+  static bool anterior = HIGH;
+  static unsigned long tCambio = 0;
+  bool actual = digitalRead(PIN_BOTON);
+  if (actual != anterior &amp;&amp; millis() - tCambio &gt; 50) {
+    tCambio = millis();
+    if (actual == LOW) enMarcha = !enMarcha;
+    anterior = actual;
+  }
+  digitalWrite(PIN_LED, enMarcha);
+}
+
+void contarCajas() {
+  bool ir = digitalRead(PIN_IR);
+  if (irAnterior == HIGH &amp;&amp; ir == LOW) cajas++;  // flanco: una caja entra al haz
+  irAnterior = ir;
+}
+</pre>
+    </div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const $ = s => document.querySelector(s);
+const fmt = (x, d = 2) => x.toFixed(d).replace('.', ',');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- modelo ----------
+const T = 0.1, VMAX = 12, CPR = 374, D_CM = 3, LOAD = 0.9;
+const S = {
+  p: 4, r: 2, Kp: 3, Ki: 15, closed: true, running: true, auto: true,
+  y: 0, I: 0, u: 0, e: 0, ym: 0, frac: 0, count: 0,
+  t: 0, tNext: 0, tBox: 0.6, boxesDone: 0, hist: [], log: [],
+};
+const onBelt = () => boxes.filter(b => b.on).length;
+
+function controlStep() {
+  // 1) medición por encoder: pulsos enteros durante T
+  const n = Math.floor(S.count); S.count -= n;
+  S.ym = n / (CPR * T);
+  const r = S.running ? S.r : 0;
+  S.e = r - S.ym;
+  if (!S.running) { S.u = 0; S.I = 0; }
+  else if (!S.closed) { S.u = Math.min(VMAX, r * S.p); }   // lazo abierto: tensión que daría r sin carga
+  else {
+    const iNew = S.I + S.Ki * T * S.e;
+    let u = S.Kp * S.e + iNew;
+    if (u > VMAX) { u = VMAX; if (S.e < 0) S.I = iNew; }
+    else if (u < 0) { u = 0; if (S.e > 0) S.I = iNew; }
+    else S.I = iNew;
+    S.u = u;
+  }
+  const pwm = Math.round(S.u / VMAX * 255);
+  S.log.push(`${fmt(S.t, 1).padStart(6)}  r=${fmt(r)}  y=${fmt(S.ym)}  u=${fmt(S.u, 1).padStart(4)}V  pwm=${String(pwm).padStart(3)}`);
+  if (S.log.length > 14) S.log.shift();
+  S.hist.push({ t: S.t, r, y: S.ym, u: S.u });
+  while (S.hist.length && S.hist[0].t < S.t - 10) S.hist.shift();
+}
+
+function physics(dt) {
+  // planta continua con ZOH: dy/dt = -p·y + u - carga, integrada en pasos de 1 ms
+  const h = 0.001;
+  for (let k = 0; k < Math.round(dt / h); k++) {
+    if (S.t >= S.tNext) { controlStep(); S.tNext += T; }
+    const d = onBelt() * LOAD;
+    const a = Math.exp(-S.p * h);
+    S.y = Math.max(0, S.y * a + (1 - a) / S.p * (S.u - d));
+    S.count += S.y * CPR * h;
+    S.t += h;
+  }
+}
+
+// ---------- escena ----------
+const stage = $('#stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+stage.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 200);
+camera.position.set(3.6, 4.2, 7.6);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(-0.2, 0.8, 0.9); controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI * 0.48; controls.minDistance = 4; controls.maxDistance = 25;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x556666, 1.25));
+const sun = new THREE.DirectionalLight(0xffffff, 1.6); sun.position.set(4, 9, 6); scene.add(sun);
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage);
+
+const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function applyTheme() { scene.background = new THREE.Color(tok('--bg')); floorMat.color.set(tok('--line')); drawChart(); }
+
+const mat = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: o.r ?? 0.6, metalness: o.m ?? 0.1, ...o.extra });
+function mesh(geo, m, x, y, z, parent = scene) { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); parent.add(o); return o; }
+function label(text, pos, size = 0.26) {
+  const fs = 64, pad = 14, c = document.createElement('canvas'), ctx = c.getContext('2d');
+  const font = `500 ${fs}px "IBM Plex Mono", ui-monospace, monospace`;
+  ctx.font = font; const w = Math.ceil(ctx.measureText(text).width) + pad * 2;
+  c.width = w; c.height = fs + pad * 2;
+  ctx.fillStyle = 'rgba(20,32,30,0.82)'; ctx.beginPath(); ctx.roundRect(0, 0, w, c.height, 16); ctx.fill();
+  ctx.font = font; ctx.fillStyle = '#ffffff'; ctx.textBaseline = 'middle'; ctx.fillText(text, pad, c.height / 2 + 2);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true }));
+  s.scale.set(size * w / c.height, size, 1); s.position.copy(pos); s.renderOrder = 10; scene.add(s); return s;
+}
+function wire(points, color, r = 0.022) {
+  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
+  mesh(new THREE.TubeGeometry(curve, 60, r, 8, false), mat(color, { r: 0.4 }), 0, 0, 0);
+}
+
+// suelo
+const floorMat = new THREE.MeshStandardMaterial({ color: tok('--line'), roughness: 1 });
+const floor = mesh(new THREE.PlaneGeometry(40, 40), floorMat, 0, 0, 0); floor.rotation.x = -Math.PI / 2;
+
+// estructura de la cinta
+const L = 6, W = 1.3, H = 1.0, R = 0.16;
+const frameM = mat(0x8a939a, { m: 0.5, r: 0.4 });
+for (const z of [-W / 2 - 0.06, W / 2 + 0.06]) {
+  mesh(new THREE.BoxGeometry(L + 0.6, 0.22, 0.06), frameM, 0, H, z);
+  for (const x of [-L / 2, L / 2]) mesh(new THREE.BoxGeometry(0.08, H, 0.08), frameM, x, H / 2, z);
+}
+// rodillos
+const rollers = [];
+for (const x of [-L / 2, L / 2]) {
+  const r = mesh(new THREE.CylinderGeometry(R, R, W + 0.1, 28), mat(0x5b6168, { m: 0.6, r: 0.35 }), x, H, 0);
+  r.rotation.x = Math.PI / 2; rollers.push(r);
+  const mark = mesh(new THREE.BoxGeometry(0.05, 0.02, W + 0.12), mat(0xf0a33a), 0, 0, 0, scene); rollers.push(mark); mark.userData = { x };
+}
+// banda con textura desplazable
+function beltTexture() {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 64; const x = c.getContext('2d');
+  x.fillStyle = '#2b2f33'; x.fillRect(0, 0, 256, 64);
+  x.fillStyle = '#41474d'; for (let i = 0; i < 256; i += 32) x.fillRect(i, 0, 10, 64);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(8, 1); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const texTop = beltTexture(), texBot = beltTexture();
+const beltTop = mesh(new THREE.BoxGeometry(L, 0.03, W), new THREE.MeshStandardMaterial({ map: texTop, roughness: 0.9 }), 0, H + R, 0);
+mesh(new THREE.BoxGeometry(L, 0.03, W), new THREE.MeshStandardMaterial({ map: texBot, roughness: 0.9 }), 0, H - R, 0);
+for (const x of [-L / 2, L / 2]) { const c = mesh(new THREE.CylinderGeometry(R + 0.015, R + 0.015, W, 28, 1, true, x < 0 ? Math.PI : 0, Math.PI), new THREE.MeshStandardMaterial({ color: 0x2b2f33, side: THREE.DoubleSide }), x, H, 0); c.rotation.x = Math.PI / 2; c.rotation.z = 0; }
+
+// motor + encoder
+const motorZ = -W / 2 - 0.45;
+const motor = mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.6, 28), mat(0xb9bec4, { m: 0.7, r: 0.3 }), -L / 2, H, motorZ - 0.1); motor.rotation.x = Math.PI / 2;
+mesh(new THREE.BoxGeometry(0.42, 0.42, 0.22), mat(0xc9a227, { m: 0.6, r: 0.35 }), -L / 2, H, motorZ + 0.3);
+const encDisk = mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.03, 24), mat(0x1f7a3a), -L / 2, H, motorZ - 0.43); encDisk.rotation.x = Math.PI / 2;
+const encMark = mesh(new THREE.BoxGeometry(0.03, 0.14, 0.035), mat(0xffffff), 0, 0, 0);
+label('Motor DC 12 V + encoder', new THREE.Vector3(-L / 2, H + 0.65, motorZ - 0.2));
+
+// sensor IR
+const irX = L / 2 - 0.7;
+mesh(new THREE.BoxGeometry(0.14, 0.35, 0.12), mat(0x2f6fd1), irX, H + 0.35, W / 2 + 0.16);
+const beam = mesh(new THREE.BoxGeometry(0.02, 0.02, W), new THREE.MeshBasicMaterial({ color: 0xff3b30, transparent: true, opacity: 0.35 }), irX, H + 0.38, 0);
+label('Sensor IR (D5)', new THREE.Vector3(irX, H + 0.85, W / 2 + 0.2), 0.22);
+
+// banco de electrónica
+const benchZ = 2.4;
+mesh(new THREE.BoxGeometry(5.6, 0.5, 1.6), mat(0x9c7a55, { r: 0.8 }), -0.6, 0.25, benchZ);
+const top = 0.5;
+// Arduino
+const ard = new THREE.Group(); ard.position.set(-2.4, top, benchZ); scene.add(ard);
+mesh(new THREE.BoxGeometry(1.3, 0.06, 0.95), mat(0x0b6fa4, { r: 0.5 }), 0, 0.03, 0, ard);
+mesh(new THREE.BoxGeometry(0.35, 0.2, 0.3), mat(0xb9bec4, { m: 0.7 }), -0.55, 0.13, -0.25, ard);
+mesh(new THREE.BoxGeometry(0.5, 0.06, 0.16), mat(0x222222), 0.1, 0.09, 0.05, ard);
+mesh(new THREE.BoxGeometry(1.0, 0.1, 0.06), mat(0x222222), 0.1, 0.11, -0.43, ard);
+mesh(new THREE.BoxGeometry(0.8, 0.1, 0.06), mat(0x222222), 0.2, 0.11, 0.43, ard);
+const led = mesh(new THREE.BoxGeometry(0.06, 0.04, 0.04), new THREE.MeshStandardMaterial({ color: 0x2ecc71, emissive: 0x2ecc71, emissiveIntensity: 1 }), -0.2, 0.08, -0.25, ard);
+label('Arduino UNO', new THREE.Vector3(-2.4, top + 0.55, benchZ));
+// protoboard
+const bb = new THREE.Group(); bb.position.set(-0.4, top, benchZ + 0.1); scene.add(bb);
+mesh(new THREE.BoxGeometry(1.8, 0.1, 0.7), mat(0xf2f2ee, { r: 0.9 }), 0, 0.05, 0, bb);
+mesh(new THREE.BoxGeometry(1.7, 0.012, 0.03), mat(0xd33), 0, 0.105, -0.3, bb);
+mesh(new THREE.BoxGeometry(1.7, 0.012, 0.03), mat(0x2f6fd1), 0, 0.105, 0.3, bb);
+mesh(new THREE.BoxGeometry(0.3, 0.12, 0.3), mat(0x2f5d9b), -0.45, 0.16, 0, bb);
+const knob = mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.22, 16), mat(0x333333), -0.45, 0.33, 0, bb);
+const knobMark = mesh(new THREE.BoxGeometry(0.02, 0.03, 0.09), mat(0xffffff), 0, 0.12, 0.05, knob);
+mesh(new THREE.BoxGeometry(0.22, 0.1, 0.22), mat(0x333333), 0.35, 0.15, 0, bb);
+const btn = mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.06, 12), mat(0xd33), 0.35, 0.23, 0, bb);
+label('Protoboard: potenciómetro + pulsador', new THREE.Vector3(-0.4, top + 0.75, benchZ + 0.1), 0.22);
+// L298N
+const drv = new THREE.Group(); drv.position.set(1.3, top, benchZ); scene.add(drv);
+mesh(new THREE.BoxGeometry(0.75, 0.06, 0.75), mat(0xb3261e), 0, 0.03, 0, drv);
+mesh(new THREE.BoxGeometry(0.4, 0.4, 0.14), mat(0x222222, { m: 0.6 }), 0, 0.26, -0.1, drv);
+for (let i = 0; i < 5; i++) mesh(new THREE.BoxGeometry(0.4, 0.3, 0.015), mat(0x222222, { m: 0.6 }), 0, 0.26, 0.0 + i * 0.05, drv);
+label('Driver L298N', new THREE.Vector3(1.3, top + 0.8, benchZ));
+// fuente
+mesh(new THREE.BoxGeometry(0.8, 0.45, 0.6), mat(0x6b7178, { m: 0.4 }), 2.5, top + 0.225, benchZ);
+label('Fuente 12 V', new THREE.Vector3(2.5, top + 0.75, benchZ));
+
+// cables
+const Y = top + 0.14;
+wire([[-2.1, Y, benchZ - 0.43], [-1.3, Y + 0.25, benchZ - 0.2], [-0.85, Y, benchZ + 0.1]], 0x2f6fd1);          // A0 -> pot
+wire([[-2.3, Y, benchZ + 0.43], [-1.4, Y + 0.2, benchZ + 0.45], [-1.2, Y - 0.02, benchZ + 0.4]], 0xdd3333);     // 5V -> riel +
+wire([[-2.2, Y, benchZ + 0.43], [-1.5, Y + 0.15, benchZ + 0.3], [-1.2, Y - 0.02, benchZ - 0.2]], 0x222222);     // GND -> riel -
+wire([[-1.9, Y, benchZ - 0.43], [-0.2, Y + 0.6, benchZ - 0.7], [1.1, Y + 0.05, benchZ + 0.3]], 0xe0b100);       // D9 -> ENA
+wire([[-1.8, Y, benchZ - 0.43], [-0.1, Y + 0.5, benchZ - 0.6], [1.2, Y + 0.05, benchZ + 0.3]], 0x8a55c7);       // D7/D8 -> IN
+wire([[-1.7, Y, benchZ - 0.43], [-2.2, H, 0.2], [-L / 2 - 0.1, H - 0.1, motorZ - 0.45]], 0x2e9a52);             // D2 <- encoder
+wire([[1.5, Y, benchZ - 0.35], [0.5, H + 0.3, -0.2], [-L / 2 + 0.1, H - 0.05, motorZ - 0.2]], 0xdd3333, 0.03);  // OUT1 -> motor
+wire([[1.6, Y, benchZ - 0.35], [0.6, H + 0.25, -0.3], [-L / 2 + 0.1, H + 0.05, motorZ - 0.2]], 0x222222, 0.03);  // OUT2 -> motor
+wire([[2.2, top + 0.3, benchZ], [1.9, top + 0.2, benchZ + 0.1], [1.6, Y, benchZ + 0.3]], 0xdd3333, 0.03);        // 12 V
+wire([[-1.6, Y, benchZ - 0.43], [0.8, H + 0.6, 1.5], [irX, H + 0.2, W / 2 + 0.16]], 0x2f6fd1, 0.018);          // D5 <- IR
+
+// cajas
+const boxes = [];
+const boxColors = [0xa8743f, 0x9a6a38, 0xb88350];
+function addBox() {
+  if (boxes.some(b => b.on && b.m.position.x < -L / 2 + 0.9)) return;
+  const m = mesh(new THREE.BoxGeometry(0.5, 0.42, 0.55), mat(boxColors[boxes.length % 3], { r: 0.9 }), -L / 2 + 0.35, 3, (Math.random() - 0.5) * 0.4);
+  boxes.push({ m, on: false, vy: 0, falling: true, counted: false, gone: false });
+}
+function updateBoxes(dt, v) {
+  const yRest = H + R + 0.015 + 0.21;
+  for (const b of boxes) {
+    const p = b.m.position;
+    if (b.falling) {
+      b.vy -= 9.8 * dt; p.y += b.vy * dt;
+      if (b.on === false && p.y <= yRest && p.x < L / 2) { p.y = yRest; b.vy = 0; b.falling = false; b.on = true; }
+      if (p.y < -1) b.gone = true;
+      if (!b.on && p.x >= L / 2) p.x += 0.6 * dt;
+      continue;
+    }
+    p.x += v * dt;
+    if (!b.counted && p.x + 0.25 > irX) { b.counted = true; S.boxesDone++; beam.material.opacity = 0.9; }
+    if (p.x > L / 2 + 0.1) { b.on = false; b.falling = true; b.vy = 0; }
+  }
+  for (let i = boxes.length - 1; i >= 0; i--) if (boxes[i].gone) { scene.remove(boxes[i].m); boxes[i].m.geometry.dispose(); boxes.splice(i, 1); }
+}
+
+// ---------- gráfico ----------
+const chart = $('#chart');
+function drawChart() {
+  const dpr = Math.min(devicePixelRatio, 2), w = chart.clientWidth, h = chart.clientHeight;
+  if (chart.width !== w * dpr) { chart.width = w * dpr; chart.height = h * dpr; }
+  const c = chart.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
+  const L0 = 40, R0 = 40, T0 = 10, B0 = 26, pw = w - L0 - R0, ph = h - T0 - B0;
+  const t1 = Math.max(10, S.t), t0 = t1 - 10;
+  const X = t => L0 + (t - t0) / 10 * pw, Yv = y => T0 + ph - y / 3 * ph, Yu = u => T0 + ph - u / 12 * ph;
+  c.font = '11px "IBM Plex Mono", monospace'; c.lineWidth = 1;
+  c.strokeStyle = tok('--line'); c.fillStyle = tok('--muted');
+  for (let v = 0; v <= 3; v += 0.5) { c.beginPath(); c.moveTo(L0, Yv(v)); c.lineTo(L0 + pw, Yv(v)); c.stroke(); c.textAlign = 'right'; c.fillText(fmt(v, 1), L0 - 6, Yv(v) + 4); }
+  c.textAlign = 'left'; for (let u = 0; u <= 12; u += 3) c.fillText(u + ' V', L0 + pw + 6, Yu(u) + 4);
+  c.textAlign = 'center';
+  for (let t = Math.ceil(t0); t <= t1; t += 1) c.fillText(fmt(t, 0) + ' s', X(t), h - 8);
+  c.textAlign = 'left'; c.fillText('rev/s', L0 + 4, T0 + 12);
+  const series = (key, Yf, color, dash) => {
+    c.strokeStyle = color; c.lineWidth = 2; c.setLineDash(dash || []); c.beginPath();
+    S.hist.forEach((p, i) => { const x = X(p.t), y = Yf(p[key]); i ? c.lineTo(x, y) : c.moveTo(x, y); }); c.stroke(); c.setLineDash([]);
+  };
+  series('u', Yu, tok('--sample'));
+  series('r', Yv, tok('--muted'), [6, 4]);
+  series('y', Yv, tok('--trace'));
+  const last = S.hist[S.hist.length - 1];
+  if (last) { c.fillStyle = tok('--trace'); c.beginPath(); c.arc(X(last.t), Yv(last.y), 3.5, 0, 7); c.fill(); }
+}
+
+// ---------- interfaz ----------
+function ui() {
+  $('#k-y').textContent = fmt(S.ym); $('#k-v').textContent = fmt(S.ym * Math.PI * D_CM, 1);
+  $('#k-u').textContent = fmt(S.u, 1); $('#k-pwm').textContent = Math.round(S.u / VMAX * 255);
+  $('#k-e').textContent = fmt(S.e); $('#k-n').textContent = S.boxesDone; $('#k-on').textContent = onBelt();
+  $('#serial').textContent = S.log.join('\n');
+  const dot = $('#dot'); dot.classList.toggle('off', !S.running);
+  $('#mode-txt').textContent = !S.running ? 'Detenida (pulsador D4)' : S.closed ? 'Lazo cerrado · PI en marcha' : 'Lazo abierto · sin realimentación';
+}
+const bind = (id, key, out, d) => $(id).addEventListener('input', e => { S[key] = +e.target.value; $(out).textContent = fmt(S[key], d) + (key === 'r' ? ' rev/s' : ''); });
+bind('#rng-r', 'r', '#o-r', 2); bind('#rng-kp', 'Kp', '#o-kp', 1); bind('#rng-ki', 'Ki', '#o-ki', 1);
+$('#sel-p').addEventListener('change', e => { S.p = +e.target.value; $('#h-eq').textContent = `Arduino UNO · T = 0,1 s · ZOH · G(s) = 1/(s+${S.p})`; });
+$('#b-box').addEventListener('click', addBox);
+$('#b-auto').addEventListener('click', e => { S.auto = !S.auto; e.currentTarget.setAttribute('aria-pressed', S.auto); });
+$('#b-loop').addEventListener('click', e => { S.closed = !S.closed; S.I = S.u; e.currentTarget.setAttribute('aria-pressed', !S.closed); ui(); });
+$('#b-run').addEventListener('click', e => { S.running = !S.running; e.currentTarget.textContent = S.running ? 'Parar (D4)' : 'Arrancar (D4)'; btn.position.y = 0.2; setTimeout(() => btn.position.y = 0.23, 150); ui(); });
+$('#b-reset').addEventListener('click', () => {
+  Object.assign(S, { y: 0, I: 0, u: 0, e: 0, ym: 0, count: 0, t: 0, tNext: 0, tBox: 0.6, boxesDone: 0, hist: [], log: [] });
+  boxes.forEach(b => { scene.remove(b.m); b.m.geometry.dispose(); }); boxes.length = 0;
+});
+$('#b-copy').addEventListener('click', e => {
+  const b = e.currentTarget, txt = $('#code').textContent;
+  navigator.clipboard.writeText(txt).then(() => { b.textContent = 'Copiado'; setTimeout(() => b.textContent = 'Copiar', 1500); })
+    .catch(() => { const r = document.createRange(); r.selectNodeContents($('#code')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selecciona y copia'; });
+});
+new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+new ResizeObserver(drawChart).observe(chart);
+
+// ---------- bucle ----------
+resize(); applyTheme();
+let last = performance.now(), uiAcc = 0;
+renderer.setAnimationLoop(now => {
+  const dt = Math.min((now - last) / 1000, 0.05); last = now;
+  physics(dt);
+  if (S.auto && S.running) { S.tBox -= dt; if (S.tBox <= 0) { addBox(); S.tBox = 2.6 + Math.random() * 1.6; } }
+  const vRoll = S.y;                                  // rev/s del rodillo
+  const vBelt = vRoll * 2 * Math.PI * R;              // unidades de escena por segundo
+  texTop.offset.x -= vBelt * dt / L * 8; texBot.offset.x += vBelt * dt / L * 8;
+  rollers.forEach(o => { if (o.userData.x !== undefined) { const ang = (o.userData.ang = (o.userData.ang || 0) - vRoll * 2 * Math.PI * dt); o.position.set(o.userData.x + Math.sin(ang) * R, H + Math.cos(ang) * R, 0); o.rotation.z = -ang; } });
+  encDisk.rotation.y -= vRoll * 2 * Math.PI * dt * 3;
+  const ea = encDisk.rotation.y; encMark.position.set(-L / 2 + Math.sin(-ea) * 0.1, H + Math.cos(-ea) * 0.1, motorZ - 0.45);
+  knob.rotation.y = -S.r / 2.8 * Math.PI * 1.5;
+  led.material.emissiveIntensity = S.running ? 1 : 0.05;
+  beam.material.opacity += (0.35 - beam.material.opacity) * Math.min(1, dt * 4);
+  updateBoxes(dt, vBelt);
+  uiAcc += dt; if (uiAcc > 0.1) { uiAcc = 0; ui(); drawChart(); }
+  controls.update(); renderer.render(scene, camera);
+});
+document.fonts?.ready.then(drawChart);
+</script>
+<noscript><p style="padding:24px">Esta simulación necesita JavaScript y WebGL.</p></noscript>
+
+</html>
