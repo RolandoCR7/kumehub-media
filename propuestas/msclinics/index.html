@@ -1,0 +1,1819 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MSClinics · Insumos médicos</title>
+<meta name="description" content="Mobiliario clínico, monitores de signos vitales, protección personal y ortopedia en Puente Alto. Arma tu lista y cotiza por WhatsApp.">
+<!-- Propuesta: quitar noindex al reemplazar el sitio en producción -->
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A7A73">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MSClinics · Insumos médicos y equipamiento clínico">
+<meta property="og:description" content="Arma tu lista de insumos y equipos médicos y recibe precio y disponibilidad por WhatsApp.">
+<meta property="og:url" content="https://msclinics.cl/">
+<meta property="og:locale" content="es_CL">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Schibsted+Grotesk:wght@600;700;800&display=swap">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "MSClinics",
+  "url": "https://msclinics.cl/",
+  "description": "Insumos médicos, mobiliario clínico, equipos médicos, protección personal y ortopedia.",
+  "telephone": ["+56950030765", "+56978893201"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. Diego Portales 08994",
+    "addressLocality": "Puente Alto",
+    "addressRegion": "Región Metropolitana",
+    "addressCountry": "CL"
+  }
+}
+</script>
+<style>
+/* Layout: catálogo primero. La cotización es la columna vertebral de la página;
+   un monitor de signos vitales es la única pieza protagonista y todo lo demás queda en calma. */
+:root {
+  --bg: #F3F7F7;
+  --surface: #FFFFFF;
+  --sunk: #E7EFEF;
+  --ink: #0D2830;
+  --muted: #4B676E;
+  --line: #D2DFE0;
+  --accent: #0A7A73;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #D5EDEA;
+  --band: #0D2830;
+  --band-ink: #E6F2F1;
+  --band-muted: #9CB7BB;
+  --band-line: #24434B;
+  --wa: #168C4A;
+  --shadow: 0 1px 2px rgb(13 40 48 / .06), 0 10px 30px -14px rgb(13 40 48 / .22);
+  --backdrop: rgb(6 20 24 / .5);
+
+  /* El monitor es un equipo: se ve igual en ambos temas */
+  --screen: #051210;
+  --bezel: #16262B;
+  --bezel-ink: #8FA7AB;
+  --phos: #3BE6A8;
+  --pleth: #5CC9F3;
+  --amber: #F2C14E;
+
+  --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --fs-xs: .8125rem;
+  --fs-sm: .9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.625rem;
+  --fs-2xl: clamp(1.75rem, 1.2rem + 1.8vw, 2.375rem);
+  --fs-hero: clamp(2.25rem, 1.3rem + 3.6vw, 4rem);
+
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --gutter: clamp(16px, 4vw, 40px);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #081518;
+    --surface: #0E1F24;
+    --sunk: #12282E;
+    --ink: #E3EFEE;
+    --muted: #93AEB2;
+    --line: #1F3A41;
+    --accent: #3CC7B9;
+    --accent-ink: #04211E;
+    --accent-soft: #123A3B;
+    --band: #0F2C33;
+    --band-ink: #E3EFEE;
+    --band-muted: #93AEB2;
+    --band-line: #2A4B53;
+    --wa: #25C466;
+    --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 12px 30px -14px rgb(0 0 0 / .6);
+    --backdrop: rgb(0 0 0 / .6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #081518;
+  --surface: #0E1F24;
+  --sunk: #12282E;
+  --ink: #E3EFEE;
+  --muted: #93AEB2;
+  --line: #1F3A41;
+  --accent: #3CC7B9;
+  --accent-ink: #04211E;
+  --accent-soft: #123A3B;
+  --band: #0F2C33;
+  --band-ink: #E3EFEE;
+  --band-muted: #93AEB2;
+  --band-line: #2A4B53;
+  --wa: #25C466;
+  --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 12px 30px -14px rgb(0 0 0 / .6);
+  --backdrop: rgb(0 0 0 / .6);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-md)/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+img, svg, canvas { display: block; max-width: 100%; }
+svg { stroke-width: 2; }
+[hidden] { display: none !important; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -.02em; }
+p { margin: 0; text-wrap: pretty; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.wrap { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: var(--gutter); }
+.skip { position: absolute; left: 16px; top: -60px; z-index: 100; background: var(--accent); color: var(--accent-ink); padding: 10px 16px; border-radius: var(--r-sm); text-decoration: none; font-weight: 600; }
+.skip:focus { top: 12px; }
+
+.eyebrow {
+  font: 600 var(--fs-xs)/1.2 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--accent);
+}
+.lead { color: var(--muted); font-size: var(--fs-lg); line-height: 1.55; max-width: 60ch; }
+.section { padding-block: clamp(56px, 8vw, 104px); }
+.section-head { display: grid; gap: 14px; max-width: 760px; margin-bottom: clamp(28px, 4vw, 44px); }
+.section-head h2 { font-size: var(--fs-2xl); }
+.section-head .lead { font-size: var(--fs-md); }
+
+/* Botones */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 46px; padding: 0 20px;
+  border-radius: 999px; border: 1.5px solid transparent;
+  font-weight: 600; font-size: var(--fs-sm); text-decoration: none; white-space: nowrap;
+  transition: background-color .2s, border-color .2s, color .2s, transform .2s;
+}
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { background: color-mix(in oklab, var(--accent) 86%, var(--ink)); }
+.btn-ghost { border-color: var(--line); background: var(--surface); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-wa { background: var(--wa); color: #fff; }
+.btn-wa:hover { background: color-mix(in oklab, var(--wa) 88%, #000); }
+.btn-sm { min-height: 38px; padding: 0 14px; font-size: var(--fs-xs); }
+.btn-block { width: 100%; }
+.icon-btn {
+  display: inline-grid; place-items: center; width: 42px; height: 42px;
+  border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+}
+.icon-btn:hover { border-color: var(--accent); }
+.icon-btn svg { width: 20px; height: 20px; }
+kbd {
+  font: 600 .75rem/1 var(--mono); padding: 3px 6px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--sunk); color: var(--muted);
+}
+
+/* Barra superior y cabecera */
+.topbar { background: var(--band); color: var(--band-muted); font-size: var(--fs-xs); }
+.topbar .wrap { display: flex; flex-wrap: wrap; gap: 6px 20px; justify-content: space-between; padding-block: 8px; }
+.topbar a { color: var(--band-ink); text-decoration: none; }
+.topbar a:hover { text-decoration: underline; }
+.topbar span { display: inline-flex; gap: 6px; align-items: center; }
+.topbar svg { width: 14px; height: 14px; }
+
+.header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40;
+  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.header .wrap { display: flex; align-items: center; gap: 16px; min-height: 68px; }
+.progress {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--accent); transform-origin: 0 50%; transform: scaleX(0);
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .progress { animation: grow linear both; animation-timeline: scroll(root); }
+    @keyframes grow { to { transform: scaleX(1); } }
+  }
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; margin-right: auto; }
+.brand-mark { width: 38px; height: 38px; flex: none; }
+.brand-name { font: 800 1.25rem/1 var(--display); letter-spacing: -.03em; }
+.brand-name span { color: var(--accent); }
+.brand-sub { display: block; font: 500 .6875rem/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.nav { display: flex; gap: 4px; }
+.nav a {
+  text-decoration: none; font-weight: 500; font-size: var(--fs-sm); color: var(--muted);
+  padding: 8px 12px; border-radius: 999px;
+}
+.nav a:hover { color: var(--ink); background: var(--sunk); }
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.search-trigger {
+  display: inline-flex; align-items: center; gap: 10px; height: 42px; padding: 0 8px 0 14px;
+  border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--muted);
+  font-size: var(--fs-sm);
+}
+.search-trigger:hover { border-color: var(--accent); color: var(--ink); }
+.search-trigger svg { width: 18px; height: 18px; }
+.quote-btn { position: relative; }
+.quote-btn .count {
+  position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px;
+  border-radius: 999px; background: var(--accent); color: var(--accent-ink);
+  font: 600 .6875rem/20px var(--mono); text-align: center;
+}
+.menu-btn { display: none; }
+.mobile-nav { border-top: 1px solid var(--line); }
+.mobile-nav .wrap { display: grid; gap: 2px; padding-block: 10px 14px; }
+.mobile-nav a { text-decoration: none; padding: 12px 4px; font-weight: 500; border-bottom: 1px solid var(--line); }
+.mobile-nav a:last-child { border-bottom: 0; }
+@media (max-width: 1040px) {
+  .nav { display: none; }
+  .menu-btn { display: inline-grid; }
+}
+@media (max-width: 640px) {
+  .search-trigger .label, .search-trigger kbd { display: none; }
+  .search-trigger { width: 42px; padding: 0; justify-content: center; }
+  .brand-sub { display: none; }
+  .topbar .addr { display: none; }
+}
+
+/* Hero */
+.hero { padding-block: clamp(40px, 6vw, 80px) clamp(48px, 7vw, 96px); }
+.hero .wrap { display: grid; gap: clamp(36px, 5vw, 64px); align-items: center; }
+@media (min-width: 980px) { .hero .wrap { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); } }
+.hero-copy { display: grid; gap: 22px; min-width: 0; }
+.hero h1 { font-size: var(--fs-hero); letter-spacing: -.035em; line-height: 1.02; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero-search {
+  display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 18px;
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px;
+  box-shadow: var(--shadow); max-width: 560px;
+}
+.hero-search:focus-within { border-color: var(--accent); }
+.hero-search svg { width: 20px; height: 20px; color: var(--muted); flex: none; }
+.hero-search input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font-size: var(--fs-md); padding: 8px 0; }
+.hero-search input::placeholder { color: var(--muted); opacity: .85; }
+.quick { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.quick > span { font-size: var(--fs-xs); color: var(--muted); margin-right: 2px; }
+.chip {
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 999px; padding: 6px 12px; font-size: var(--fs-xs); font-weight: 500;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 0; margin: 4px 0 0; list-style: none; color: var(--muted); font-size: var(--fs-sm); }
+.facts li { display: inline-flex; align-items: center; gap: 8px; }
+.facts svg { width: 18px; height: 18px; color: var(--accent); flex: none; }
+
+/* Monitor de signos vitales */
+.monitor { margin: 0; container-type: inline-size; container-name: monitor; min-width: 0; }
+.monitor-bezel {
+  background: var(--bezel); border-radius: 26px; padding: 14px;
+  box-shadow: 0 30px 60px -30px rgb(5 18 16 / .55), inset 0 1px 0 rgb(255 255 255 / .06);
+}
+.monitor-top {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  font: 600 .6875rem/1 var(--mono); letter-spacing: .1em; color: var(--bezel-ink);
+  padding: 2px 8px 12px;
+}
+.monitor-top .led { display: inline-flex; align-items: center; gap: 8px; }
+.monitor-top .led::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--phos); box-shadow: 0 0 8px var(--phos); }
+.monitor-screen {
+  display: grid; gap: 0;
+  background:
+    linear-gradient(rgb(59 230 168 / .06) 1px, transparent 1px) 0 0 / 100% 22px,
+    linear-gradient(90deg, rgb(59 230 168 / .06) 1px, transparent 1px) 0 0 / 22px 100%,
+    var(--screen);
+  border-radius: 14px; overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .04), inset 0 0 40px rgb(0 0 0 / .6);
+}
+@container monitor (min-width: 470px) {
+  .monitor-screen { grid-template-columns: minmax(0, 1fr) 36%; }
+  .nums { border-left: 1px solid rgb(255 255 255 / .07); border-top: 0 !important; grid-template-columns: 1fr !important; }
+}
+.waves { position: relative; min-height: 220px; }
+.waves canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wave-tag { position: absolute; left: 12px; font: 600 .6875rem/1 var(--mono); letter-spacing: .08em; z-index: 1; }
+.wave-tag.ecg { top: 12px; color: var(--phos); }
+.wave-tag.pl { top: 60%; color: var(--pleth); }
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgb(255 255 255 / .07); }
+.num { padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 0 8px; font-family: var(--mono); }
+.num + .num { border-top: 1px solid rgb(255 255 255 / .07); }
+@container monitor (max-width: 469px) { .num + .num { border-top: 0; border-left: 1px solid rgb(255 255 255 / .07); } }
+.num .k { font-size: .6875rem; letter-spacing: .08em; font-weight: 600; grid-column: 1 / -1; }
+.num .v { font-size: clamp(1.6rem, 8cqi, 2.75rem); font-weight: 600; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.num .u { font-size: .6875rem; opacity: .75; padding-bottom: 6px; }
+.num.hr { color: var(--phos); }
+.num.spo2 { color: var(--pleth); }
+.num.nibp { color: var(--amber); }
+.num.nibp .v { font-size: clamp(1.15rem, 5.5cqi, 1.9rem); }
+.num.hr .k::after { content: " ♥"; opacity: .25; transition: opacity .12s; }
+.num.hr.beat .k::after { opacity: 1; }
+@container monitor (max-width: 469px) {
+  .num { grid-template-columns: 1fr; }
+  .num .u { padding-bottom: 0; }
+}
+.monitor-strip {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 12px; padding: 10px 10px 10px 14px; border-radius: 12px;
+  background: rgb(255 255 255 / .04); color: var(--bezel-ink);
+  font: 500 .75rem/1.3 var(--mono); letter-spacing: .04em;
+}
+.monitor-strip b { color: #EAF6F3; font-weight: 600; font-variant-numeric: tabular-nums; }
+.monitor-strip .grow { flex: 1; min-width: 0; }
+.monitor-strip button {
+  border: 1px solid rgb(255 255 255 / .14); background: transparent; color: #EAF6F3;
+  border-radius: 999px; padding: 6px 12px; font: 600 .6875rem/1 var(--mono); letter-spacing: .06em;
+}
+.monitor-strip button:hover { border-color: var(--phos); color: var(--phos); }
+.monitor-strip.flash { animation: flash .9s ease-out; }
+@keyframes flash { 0% { background: rgb(59 230 168 / .28); } 100% { background: rgb(255 255 255 / .04); } }
+.monitor figcaption { margin-top: 12px; font-size: var(--fs-xs); color: var(--muted); text-align: center; }
+
+/* Catálogo */
+.cat-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+@media (max-width: 1040px) { .cat-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+  .cat-tiles { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 148px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+  .cat-tile { scroll-snap-align: start; padding: 14px; }
+}
+.cat-tile {
+  display: grid; gap: 10px; justify-items: start; text-align: left;
+  padding: 16px; border-radius: var(--r-md); border: 1.5px solid var(--line); background: var(--surface);
+  transition: border-color .2s, background-color .2s;
+}
+.cat-tile svg { width: 34px; height: 34px; color: var(--accent); stroke-width: 2.2; }
+.cat-tile strong { font: 700 var(--fs-sm)/1.2 var(--display); letter-spacing: -.01em; }
+.cat-tile span { font: 500 .75rem/1 var(--mono); color: var(--muted); }
+.cat-tile:hover { border-color: var(--accent); }
+.cat-tile[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.segmented { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--sunk); border: 1px solid var(--line); }
+.segmented button {
+  border: 0; background: transparent; padding: 7px 14px; border-radius: 999px;
+  font-size: var(--fs-xs); font-weight: 600; color: var(--muted);
+}
+.segmented button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.filter-field {
+  display: flex; align-items: center; gap: 8px; flex: 1 1 260px; max-width: 420px;
+  border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 0 8px 0 14px; height: 44px;
+}
+.filter-field:focus-within { border-color: var(--accent); }
+.filter-field svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+.filter-field input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font-size: var(--fs-sm); }
+.filter-field .clear { border: 0; background: var(--sunk); border-radius: 999px; width: 28px; height: 28px; display: grid; place-items: center; color: var(--muted); }
+.filter-field .clear svg { width: 14px; height: 14px; }
+.result-note { font: 500 var(--fs-xs)/1.4 var(--mono); color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+.card {
+  display: flex; flex-direction: column; min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden;
+  transition: border-color .2s, transform .25s, box-shadow .25s;
+}
+.card:hover { border-color: color-mix(in oklab, var(--accent) 55%, var(--line)); box-shadow: var(--shadow); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .card:hover { transform: none; } }
+.media {
+  position: relative; display: grid; place-items: center; aspect-ratio: 4 / 3; max-width: 100%; width: 100%;
+  border: 0; padding: 0; color: var(--accent);
+  background:
+    radial-gradient(closest-side, var(--surface), transparent) center / 70% 70% no-repeat,
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 18px 18px,
+    var(--sunk);
+}
+.media svg { width: 44%; height: auto; stroke-width: 1.6; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.card:hover .media svg { transform: scale(1.06); }
+.media .flag {
+  position: absolute; left: 10px; top: 10px;
+  font: 600 .625rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 999px; background: var(--surface); color: var(--muted); border: 1px solid var(--line);
+}
+.card-body { display: flex; flex-direction: column; gap: 8px; padding: 16px; flex: 1; }
+.card h3 { font-size: var(--fs-md); letter-spacing: -.01em; line-height: 1.25; }
+.card h3 button { all: unset; cursor: pointer; }
+.card h3 button:hover { color: var(--accent); }
+.card h3 button:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.card .desc { font-size: var(--fs-sm); color: var(--muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font: 500 .6875rem/1 var(--mono); color: var(--muted);
+  padding: 5px 8px; border-radius: 6px; background: var(--sunk);
+}
+.tag svg { width: 12px; height: 12px; }
+.tag.doc { color: var(--accent); background: var(--accent-soft); }
+.card-foot { margin-top: auto; padding-top: 6px; }
+.stepper {
+  display: inline-grid; grid-template-columns: 38px minmax(36px, auto) 38px; align-items: center;
+  height: 38px; border-radius: 999px; border: 1.5px solid var(--accent); overflow: hidden;
+}
+.stepper button { height: 100%; border: 0; background: transparent; color: var(--accent); display: grid; place-items: center; }
+.stepper button:hover { background: var(--accent-soft); }
+.stepper button svg { width: 16px; height: 16px; }
+.stepper output { text-align: center; font: 600 var(--fs-sm)/1 var(--mono); font-variant-numeric: tabular-nums; }
+.in-quote { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.in-quote small { font: 500 .6875rem/1.2 var(--mono); color: var(--accent); letter-spacing: .04em; }
+@media (max-width: 560px) {
+  .card { display: grid; grid-template-columns: 104px minmax(0, 1fr); }
+  .media { aspect-ratio: auto; height: 100%; min-height: 120px; }
+  .media svg { width: 64%; }
+  .media .flag { display: none; }
+  .card-body { padding: 14px; gap: 6px; }
+}
+.empty {
+  grid-column: 1 / -1; text-align: center; padding: 48px 16px; border: 1.5px dashed var(--line); border-radius: var(--r-md);
+  display: grid; gap: 12px; justify-items: center; color: var(--muted);
+}
+.empty strong { color: var(--ink); font: 700 var(--fs-lg)/1.2 var(--display); }
+
+/* Kits */
+.kits { display: grid; gap: 20px; }
+@media (min-width: 900px) { .kits { grid-template-columns: 300px minmax(0, 1fr); align-items: start; } }
+.kit-tabs { display: grid; gap: 8px; }
+@media (max-width: 899px) {
+  .kit-tabs { grid-auto-flow: column; grid-auto-columns: minmax(190px, 1fr); overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+  .kit-tab { scroll-snap-align: start; }
+}
+.kit-tab {
+  display: grid; grid-template-columns: 40px 1fr; gap: 4px 12px; align-items: center; text-align: left;
+  padding: 14px; border-radius: var(--r-md); border: 1.5px solid var(--line); background: var(--surface);
+}
+.kit-tab svg { width: 32px; height: 32px; color: var(--accent); grid-row: span 2; stroke-width: 2.2; }
+.kit-tab strong { font: 700 var(--fs-sm)/1.2 var(--display); }
+.kit-tab span { font-size: var(--fs-xs); color: var(--muted); line-height: 1.3; }
+.kit-tab:hover { border-color: var(--accent); }
+.kit-tab[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.kit-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(18px, 3vw, 28px); display: grid; gap: 18px; min-width: 0; }
+.kit-panel header { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: end; }
+.kit-panel h3 { font-size: var(--fs-xl); }
+.kit-panel header p { color: var(--muted); font-size: var(--fs-sm); max-width: 56ch; }
+.kit-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.kit-item {
+  display: grid; grid-template-columns: auto 44px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  padding: 10px 0; border-top: 1px solid var(--line);
+}
+.kit-item:first-child { border-top: 0; }
+.kit-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); margin: 0; }
+.kit-item .thumb { width: 44px; height: 44px; border-radius: 10px; background: var(--sunk); display: grid; place-items: center; color: var(--accent); }
+.kit-item .thumb svg { width: 28px; height: 28px; stroke-width: 1.8; }
+.kit-item label { font-weight: 500; font-size: var(--fs-sm); line-height: 1.3; cursor: pointer; }
+.kit-item label small { display: block; color: var(--muted); font: 500 .6875rem/1.4 var(--mono); letter-spacing: .03em; }
+.kit-item.off label, .kit-item.off .thumb { opacity: .45; }
+.kit-foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding-top: 6px; border-top: 1px solid var(--line); }
+.kit-foot p { font: 500 var(--fs-xs)/1.4 var(--mono); color: var(--muted); }
+@media (max-width: 520px) {
+  .kit-item { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .kit-item .thumb { display: none; }
+}
+
+/* Banda institucional */
+.band { background: var(--band); color: var(--band-ink); border-radius: var(--r-lg); padding: clamp(24px, 5vw, 56px); display: grid; gap: clamp(24px, 4vw, 48px); }
+@media (min-width: 960px) { .band { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } }
+.band .eyebrow { color: var(--phos); }
+.band h2 { font-size: var(--fs-2xl); margin-top: 12px; }
+.band-intro { display: grid; gap: 16px; align-content: start; }
+.band-intro p { color: var(--band-muted); }
+.band-points { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--band-line); border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--band-line); }
+@media (max-width: 560px) { .band-points { grid-template-columns: 1fr; } }
+.band-point { background: var(--band); padding: 20px; display: grid; gap: 8px; align-content: start; }
+.band-point svg { width: 24px; height: 24px; color: var(--phos); }
+.band-point strong { font: 700 var(--fs-md)/1.2 var(--display); }
+.band-point p { color: var(--band-muted); font-size: var(--fs-sm); line-height: 1.5; }
+.band .btn-primary { background: var(--phos); color: var(--screen); justify-self: start; }
+.band .btn-primary:hover { background: color-mix(in oklab, var(--phos) 85%, #fff); }
+
+/* Proceso */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: step; }
+@media (max-width: 960px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+.step { position: relative; padding: 20px 0 0; border-top: 2px solid var(--line); display: grid; gap: 8px; counter-increment: step; }
+.step::before {
+  content: counter(step, decimal-leading-zero);
+  font: 600 var(--fs-xs)/1 var(--mono); color: var(--accent); letter-spacing: .06em;
+}
+.step::after { content: ""; position: absolute; left: 0; top: -2px; width: 44px; height: 2px; background: var(--accent); }
+.step strong { font: 700 var(--fs-lg)/1.2 var(--display); letter-spacing: -.01em; }
+.step p { color: var(--muted); font-size: var(--fs-sm); }
+
+/* Compromiso */
+.solidarity { display: grid; gap: clamp(24px, 4vw, 56px); align-items: start; }
+@media (min-width: 960px) { .solidarity { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); } }
+.solidarity .copy { display: grid; gap: 16px; }
+.solidarity h2 { font-size: var(--fs-2xl); }
+.solidarity .copy p { color: var(--muted); max-width: 62ch; }
+.solidarity blockquote {
+  margin: 8px 0 0; padding: 0 0 0 18px; border-left: 3px solid var(--accent);
+  font: 600 var(--fs-lg)/1.45 var(--display); letter-spacing: -.01em; color: var(--ink); max-width: 52ch;
+}
+.solidarity blockquote cite { display: block; margin-top: 8px; font: 500 var(--fs-xs)/1.4 var(--mono); color: var(--muted); font-style: normal; }
+.manifest {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 22px; font-family: var(--mono);
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.manifest::before {
+  content: ""; position: absolute; inset: 0 0 auto; height: 6px;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 18px, transparent 18px 26px);
+}
+.manifest h3 { font: 600 var(--fs-xs)/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 6px 0 16px; }
+.manifest dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0; }
+.manifest dt, .manifest dd { padding: 10px 0; border-top: 1px dashed var(--line); font-size: var(--fs-xs); }
+.manifest dt { color: var(--muted); padding-right: 18px; text-transform: uppercase; letter-spacing: .06em; }
+.manifest dd { margin: 0; color: var(--ink); font-weight: 600; }
+.manifest .stamp {
+  margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px;
+  border: 1.5px solid var(--accent); color: var(--accent); border-radius: 6px;
+  font-size: .6875rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; transform: rotate(-2deg);
+}
+
+/* Nosotros + FAQ */
+.about { display: grid; gap: clamp(28px, 4vw, 56px); }
+@media (min-width: 960px) { .about { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); } }
+.about-copy { display: grid; gap: 16px; align-content: start; }
+.about-copy h2 { font-size: var(--fs-2xl); }
+.about-copy p { color: var(--muted); }
+.faq { display: grid; gap: 10px; min-width: 0; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+.faq summary {
+  list-style: none; cursor: pointer; padding: 16px 18px; display: flex; justify-content: space-between; gap: 16px; align-items: center;
+  font: 700 var(--fs-md)/1.3 var(--display); letter-spacing: -.01em;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary svg { width: 18px; height: 18px; flex: none; color: var(--accent); transition: transform .25s; }
+.faq details[open] summary svg { transform: rotate(45deg); }
+.faq details p { padding: 0 18px 18px; color: var(--muted); font-size: var(--fs-sm); max-width: 64ch; }
+.faq details[open] { border-color: color-mix(in oklab, var(--accent) 40%, var(--line)); }
+
+/* Contacto */
+.contact { display: grid; gap: 20px; }
+@media (min-width: 960px) { .contact { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } }
+.contact-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(20px, 3vw, 32px); display: grid; gap: 18px; align-content: start; min-width: 0; }
+.contact-card h3 { font-size: var(--fs-xl); }
+.c-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding-top: 16px; border-top: 1px solid var(--line); }
+.c-row .ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.c-row .ic svg { width: 20px; height: 20px; }
+.c-row small { display: block; font: 500 .6875rem/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.c-row .val { font-weight: 600; user-select: all; overflow-wrap: anywhere; }
+.c-row a.val { text-decoration: none; }
+.c-row a.val:hover { color: var(--accent); }
+.copy-btn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font: 600 .6875rem/1 var(--mono); letter-spacing: .04em; color: var(--muted); }
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+.form { display: grid; gap: 14px; }
+.form .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 560px) { .form .two { grid-template-columns: 1fr; } }
+.field { display: grid; gap: 6px; }
+.field label { font-size: var(--fs-xs); font-weight: 600; color: var(--muted); }
+.field input, .field textarea, .field select {
+  width: 100%; border: 1.5px solid var(--line); background: var(--bg); border-radius: 12px; padding: 12px 14px; font-size: var(--fs-sm);
+}
+.field textarea { min-height: 110px; resize: vertical; }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--accent); }
+.form-note { font-size: var(--fs-xs); color: var(--muted); }
+
+/* Footer */
+.footer { border-top: 1px solid var(--line); padding-block: 48px 32px; margin-top: clamp(40px, 6vw, 80px); }
+.footer-grid { display: grid; gap: 32px; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) { .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .footer-grid > :first-child { grid-column: 1 / -1; } }
+.footer h4 { font: 600 var(--fs-xs)/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: var(--fs-sm); }
+.footer ul a, .footer ul button { text-decoration: none; color: var(--ink); background: none; border: 0; padding: 0; text-align: left; }
+.footer ul a:hover, .footer ul button:hover { color: var(--accent); }
+.footer .blurb { color: var(--muted); font-size: var(--fs-sm); max-width: 42ch; margin-top: 14px; }
+.legal { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-size: var(--fs-xs); color: var(--muted); }
+.legal a { color: var(--muted); }
+
+/* Revelado al hacer scroll: solo desplazamiento; el contenido siempre es visible */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+    @keyframes rise { from { transform: translateY(26px); } to { transform: none; } }
+  }
+}
+
+/* Diálogos */
+dialog { border: 0; padding: 0; color: var(--ink); background: var(--surface); max-width: 100%; }
+dialog::backdrop { background: var(--backdrop); backdrop-filter: blur(3px); }
+.drawer {
+  margin: 0 0 0 auto; width: min(460px, 100%); height: 100%; max-height: 100%;
+  border-left: 1px solid var(--line);
+}
+.drawer[open] { display: flex; flex-direction: column; }
+@media (prefers-reduced-motion: no-preference) {
+  .drawer { transition: transform .32s cubic-bezier(.2,.8,.2,1), overlay .32s allow-discrete, display .32s allow-discrete; transform: translateX(100%); }
+  .drawer[open] { transform: none; }
+  @starting-style { .drawer[open] { transform: translateX(100%); } }
+  .modal { transition: opacity .22s, transform .22s, overlay .22s allow-discrete, display .22s allow-discrete; opacity: 0; transform: translateY(12px) scale(.98); }
+  .modal[open] { opacity: 1; transform: none; }
+  @starting-style { .modal[open] { opacity: 0; transform: translateY(12px) scale(.98); } }
+}
+.drawer-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 20px 16px; border-bottom: 1px solid var(--line);
+}
+.drawer-head h2 { font-size: var(--fs-xl); }
+.drawer-head p { font: 500 var(--fs-xs)/1.4 var(--mono); color: var(--muted); margin-top: 4px; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 8px 20px 20px; display: grid; gap: 18px; align-content: start; }
+.drawer-foot { padding: 16px 20px calc(16px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.drawer-foot .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.q-list { list-style: none; margin: 0; padding: 0; }
+.q-item { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.q-item .thumb { width: 48px; height: 48px; border-radius: 12px; background: var(--sunk); display: grid; place-items: center; color: var(--accent); }
+.q-item .thumb svg { width: 30px; height: 30px; stroke-width: 1.8; }
+.q-item strong { font-size: var(--fs-sm); line-height: 1.3; display: block; }
+.q-item small { font: 500 .6875rem/1.4 var(--mono); color: var(--muted); }
+.q-item .ctl { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+.q-item .stepper { height: 34px; grid-template-columns: 34px minmax(32px, auto) 34px; }
+.link-btn { border: 0; background: none; padding: 4px 0; color: var(--muted); font-size: var(--fs-xs); text-decoration: underline; text-underline-offset: 3px; }
+.link-btn:hover { color: var(--ink); }
+.q-empty { display: grid; gap: 12px; justify-items: center; text-align: center; padding: 40px 8px; color: var(--muted); }
+.q-empty svg { width: 64px; height: 64px; color: var(--accent); stroke-width: 1.4; }
+.q-empty strong { color: var(--ink); font: 700 var(--fs-lg)/1.2 var(--display); }
+.preview { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.preview summary { cursor: pointer; padding: 12px 14px; font: 600 var(--fs-xs)/1 var(--mono); letter-spacing: .04em; color: var(--muted); }
+.preview pre { margin: 0; padding: 0 14px 14px; white-space: pre-wrap; word-break: break-word; font: 400 .8125rem/1.55 var(--mono); color: var(--ink); }
+
+.modal { width: min(900px, calc(100% - 32px)); max-height: calc(100% - 48px); border-radius: var(--r-lg); overflow: auto; margin: auto; }
+.pd { display: grid; }
+@media (min-width: 760px) { .pd { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); } }
+.pd .media { aspect-ratio: 1; height: 100%; }
+.pd .media svg { width: 52%; }
+.pd-body { padding: clamp(20px, 3vw, 32px); display: grid; gap: 16px; align-content: start; }
+.pd-body h2 { font-size: var(--fs-xl); }
+.pd-body > p { color: var(--muted); }
+.pd-body dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0 16px; margin: 0; font-size: var(--fs-sm); }
+.pd-body dt, .pd-body dd { padding: 9px 0; border-top: 1px solid var(--line); }
+.pd-body dt { color: var(--muted); font: 500 var(--fs-xs)/1.9 var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+.pd-body dd { margin: 0; font-weight: 500; }
+.pd-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.close-x { position: absolute; top: 12px; right: 12px; z-index: 2; }
+
+.palette { width: min(640px, calc(100% - 32px)); margin: 10vh auto auto; border-radius: var(--r-lg); overflow: hidden; }
+.palette-input { display: flex; align-items: center; gap: 12px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+.palette-input svg { width: 20px; height: 20px; color: var(--muted); flex: none; }
+.palette-input input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; padding: 18px 0; font-size: var(--fs-lg); }
+.palette ul { list-style: none; margin: 0; padding: 8px; max-height: min(420px, 60vh); overflow-y: auto; }
+.palette li { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 12px; cursor: pointer; }
+.palette li[aria-selected="true"] { background: var(--accent-soft); }
+.palette li .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--sunk); display: grid; place-items: center; color: var(--accent); }
+.palette li .ic svg { width: 22px; height: 22px; stroke-width: 1.8; }
+.palette li strong { display: block; font-size: var(--fs-sm); font-weight: 600; line-height: 1.3; }
+.palette li small { font: 500 .6875rem/1.3 var(--mono); color: var(--muted); }
+.palette li .hint { font: 500 .6875rem/1 var(--mono); color: var(--muted); }
+.palette .group { padding: 10px 12px 4px; font: 600 .6875rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); cursor: default; display: block; }
+.palette-foot { display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 18px; border-top: 1px solid var(--line); font-size: var(--fs-xs); color: var(--muted); }
+.palette-foot span { display: inline-flex; gap: 6px; align-items: center; }
+.palette .none { padding: 28px 12px; text-align: center; color: var(--muted); font-size: var(--fs-sm); cursor: default; display: block; }
+
+/* Flotantes */
+.fab {
+  position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 30;
+  width: 58px; height: 58px; border-radius: 50%; background: var(--wa); color: #fff;
+  display: grid; place-items: center; box-shadow: 0 10px 30px -8px rgb(0 0 0 / .45); text-decoration: none;
+}
+.fab svg { width: 28px; height: 28px; }
+.fab:hover { transform: scale(1.05); }
+.toast {
+  position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  display: flex; align-items: center; gap: 12px; max-width: min(460px, calc(100% - 110px));
+  background: var(--ink); color: var(--bg); border-radius: 14px; padding: 12px 14px 12px 16px;
+  font-size: var(--fs-sm); box-shadow: 0 16px 40px -12px rgb(0 0 0 / .45);
+  transition: opacity .2s, transform .2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast button { border: 0; background: transparent; color: var(--bg); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+@media (max-width: 560px) { .toast { left: 16px; transform: translateY(20px); } .toast.show { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Ilustraciones de producto: 48×48, trazo -->
+    <symbol id="i-bed" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9v29M42 22v16M6 31h36M6 26l8-8h6l4 5h18v8"/><path d="M10 31v7M38 31v7"/><circle cx="10" cy="41" r="2.5"/><circle cx="38" cy="41" r="2.5"/><path d="M16 12l-4-4"/></symbol>
+    <symbol id="i-stretcher" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="15" width="34" height="6" rx="2"/><path d="M2 17h5M41 17h5M11 21v10M37 21v10M9 31h30M24 21v10"/><circle cx="11" cy="36" r="3"/><circle cx="37" cy="36" r="3"/></symbol>
+    <symbol id="i-exam" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h26l7-8h3l-8 12H5z"/><path d="M9 26v14M35 26v14M9 34h26"/><path d="M19 40h8v-5"/></symbol>
+    <symbol id="i-table" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="9" width="18" height="6" rx="3"/><path d="M25 15v4"/><rect x="7" y="19" width="34" height="5" rx="2"/><path d="M11 24v16M37 24v16M11 33h26"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 10h26M11 23h26M11 34h26M12 10v28M36 10v28M36 10l4-4"/><rect x="16" y="15" width="8" height="8" rx="1"/><path d="M28 23v-6h5v6"/><circle cx="12" cy="41" r="2.5"/><circle cx="36" cy="41" r="2.5"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="38" height="27" rx="3"/><path d="M9 22h7l2-5 3 10 2-8 2 3h6"/><path d="M33 13h6M33 18h4M33 26h6"/><path d="M20 34l-2 6h12l-2-6M15 40h18"/></symbol>
+    <symbol id="i-lightbox" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="40" height="28" rx="2"/><path d="M24 8v28"/><path d="M11 14c2 3 2 13 0 16M17 14c-2 3-2 13 0 16M31 14c2 3 2 13 0 16M37 14c-2 3-2 13 0 16"/><path d="M14 36v4M34 36v4M21 40h6"/></symbol>
+    <symbol id="i-flow" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="18" width="30" height="13" rx="6.5"/><path d="M35 21h5l4 2v3l-4 2h-5"/><path d="M11 18v4M15 18v3M19 18v4M23 18v3M27 18v4"/><path d="M17 27h8"/><circle cx="21" cy="27" r="1.5"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="22" cy="24" rx="11" ry="7.5"/><path d="M33 24h4"/><path d="M37 17c5 2 7 4.5 7 7s-2 5-7 7z"/><path d="M11 24H7M7 19v10"/><path d="M16 21c2 1.5 10 1.5 12 0"/></symbol>
+    <symbol id="i-hammer" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 13.8L29.8 5.4l10 18.4z"/><path d="M29.7 18.3L8 40"/></symbol>
+    <symbol id="i-mask" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17c9-4 19-4 28 0v11c-9 9-19 9-28 0z"/><path d="M13 21h22M13 25h22M15 29h18"/><path d="M10 19c-7 2-7 9 0 11M38 19c7 2 7 9 0 11"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 11h32"/><path d="M8 11c0-3 4-4 16-4s16 1 16 4"/><path d="M9 13v17c8 9 22 9 30 0V13"/><path d="M15 17v10" opacity=".5"/></symbol>
+    <symbol id="i-glasses" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18h38v7c-2 6-9 7-12 3l-3-4h-8l-3 4c-3 4-10 3-12-3z"/><path d="M5 18l-2-5M43 18l2-5"/><path d="M24 18v6"/></symbol>
+    <symbol id="i-glove" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 42V32l-7-8a2.6 2.6 0 0 1 3.8-3.5L18 25V11a2.5 2.5 0 0 1 5 0v10V8a2.5 2.5 0 0 1 5 0v13V11a2.5 2.5 0 0 1 5 0v11-7a2.5 2.5 0 0 1 5 0v12c0 6-3 10-6 12v3"/><path d="M16 38h20"/></symbol>
+    <symbol id="i-pump" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="19" width="20" height="23" rx="5"/><path d="M19 19v-4h8v4M23 15V9h9v4"/><path d="M18 29h10M18 33h7"/></symbol>
+    <symbol id="i-spray" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="21" width="17" height="21" rx="4"/><path d="M15 21v-4h9v4M13 17v-6h14l4 4h3"/><path d="M26 15l-2 5"/><path d="M38 11v.01M41 15v.01M38 19v.01M42 10v.01"/><path d="M15 30h9"/></symbol>
+    <symbol id="i-wipes" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="17" width="38" height="22" rx="6"/><ellipse cx="24" cy="23" rx="9" ry="3"/><path d="M20 23c1-6 2-10 6-12 1 3 1 8-2 12"/><path d="M11 32h10"/></symbol>
+    <symbol id="i-cane" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9h9a5 5 0 0 1 5 5"/><path d="M24 9v25"/><path d="M24 34l-9 6M24 34l9 6M24 34l-3 7M24 34l3 7"/></symbol>
+    <symbol id="i-walker" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10h22M13 10v30M35 10v30M13 22h22"/><path d="M8 10h5M35 10h5"/><path d="M9 40h8M31 40h8"/></symbol>
+    <symbol id="i-wheelchair" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="31" r="10"/><circle cx="20" cy="31" r="2"/><path d="M13 8h3v14h14l4 10h5"/><path d="M16 17h11"/><circle cx="37" cy="40" r="2.5"/><path d="M34 32v5"/></symbol>
+    <symbol id="i-bedpan" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20h28c6 0 8 3 8 7s-2 7-8 7H14c-6 0-9-5-9-10z"/><ellipse cx="21" cy="23" rx="10" ry="2.5"/><path d="M41 25h4"/></symbol>
+    <symbol id="i-box" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="38" height="7" rx="2"/><path d="M8 18v18a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4V18"/><path d="M19 25h10"/></symbol>
+    <symbol id="i-all" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="14" rx="3"/><rect x="27" y="7" width="14" height="14" rx="3"/><rect x="7" y="27" width="14" height="14" rx="3"/><path d="M34 27v14M27 34h14"/></symbol>
+    <symbol id="i-home" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22L24 8l18 14"/><path d="M11 18v22h26V18"/><path d="M24 24v10M19 29h10"/></symbol>
+    <symbol id="i-siren" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 36V26a10 10 0 0 1 20 0v10"/><path d="M9 36h30v5H9z"/><path d="M24 6v4M9 12l3 3M39 12l-3 3M24 26v6"/></symbol>
+    <symbol id="i-syringe" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M30 8l10 10M35 13l-5 5"/><path d="M32 16L14 34l-4-4 18-18"/><path d="M14 34l-6 6"/><path d="M19 23l3 3M23 19l3 3"/></symbol>
+
+    <!-- Iconos de interfaz: 24×24 -->
+    <symbol id="u-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+    <symbol id="u-quote" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></symbol>
+    <symbol id="u-wa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 1c-1-.5-2-1.4-2.5-2.5l1-1-1-2z" fill="currentColor" stroke-width="1.2"/></symbol>
+    <symbol id="u-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="u-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+    <symbol id="u-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="u-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="u-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></symbol>
+    <symbol id="u-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="u-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+    <symbol id="u-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></symbol>
+    <symbol id="u-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="u-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="u-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="u-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16M15 9h4a1 1 0 0 1 1 1v11M3 21h18"/><path d="M8 8h3M8 12h3M8 16h3"/></symbol>
+    <symbol id="u-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+    <symbol id="u-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.2-4.4A8 8 0 1 1 21 12z"/></symbol>
+    <symbol id="u-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+    <symbol id="u-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M5 12h3l1.5-2 2 4 1.5-2h6"/></symbol>
+    <symbol id="u-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#catalogo">Saltar al catálogo</a>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="addr"><svg><use href="#u-pin"/></svg>Av. Diego Portales 08994, Puente Alto</span>
+    <span><svg><use href="#u-phone"/></svg><a href="tel:+56950030765">+56 9 5003 0765</a> · <a href="tel:+56978893201">+56 9 7889 3201</a></span>
+  </div>
+</div>
+
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="MSClinics, inicio">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect width="40" height="40" rx="11" fill="var(--accent)"/>
+        <path d="M16 8h8v8h8v8h-8v8h-8v-8H8v-8h8z" fill="var(--accent-ink)" opacity=".18"/>
+        <path d="M6 21h8l2.5-6 4 13 3-9 2 2H34" fill="none" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><span class="brand-name">MS<span>Clinics</span></span><span class="brand-sub">Insumos médicos</span></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#espacios">Equipa tu espacio</a>
+      <a href="#instituciones">Instituciones</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-trigger" type="button" data-palette aria-label="Buscar productos">
+        <svg><use href="#u-search"/></svg><span class="label">Buscar</span><kbd id="kbd-hint">Ctrl K</kbd>
+      </button>
+      <button class="icon-btn" type="button" id="theme-btn" aria-label="Cambiar a tema oscuro">
+        <svg><use href="#u-moon"/></svg>
+      </button>
+      <button class="icon-btn quote-btn" type="button" data-quote aria-label="Abrir mi cotización (0 productos)">
+        <svg><use href="#u-quote"/></svg><span class="count" id="count-badge" hidden>0</span>
+      </button>
+      <button class="icon-btn menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menú">
+        <svg><use href="#u-menu"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Menú" hidden>
+    <div class="wrap">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#espacios">Equipa tu espacio</a>
+      <a href="#instituciones">Instituciones</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </nav>
+  <div class="progress" aria-hidden="true"></div>
+</header>
+
+<main id="inicio">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">Insumos médicos · Puente Alto, Chile</p>
+        <h1>Equipa tu consulta, clínica u hogar con <em>una sola cotización.</em></h1>
+        <p class="lead">Mobiliario clínico, monitores de signos vitales, protección personal y ortopedia. Arma tu lista, envíala por WhatsApp y te respondemos con precio y disponibilidad.</p>
+        <form class="hero-search" id="hero-search" role="search">
+          <svg aria-hidden="true"><use href="#u-search"/></svg>
+          <label class="sr-only" for="hero-q">Buscar en el catálogo</label>
+          <input id="hero-q" type="search" placeholder="Monitor, silla de ruedas, alcohol 70°…" autocomplete="off">
+          <button class="btn btn-primary" type="submit">Buscar</button>
+        </form>
+        <div class="quick">
+          <span>Lo más cotizado:</span>
+          <button class="chip" type="button" data-q="monitor">Monitores</button>
+          <button class="chip" type="button" data-q="silla de ruedas">Sillas de ruedas</button>
+          <button class="chip" type="button" data-q="catre">Catre clínico</button>
+          <button class="chip" type="button" data-q="alcohol">Alcohol 70°</button>
+        </div>
+        <ul class="facts">
+          <li><svg><use href="#u-doc"/></svg>Fichas técnicas descargables</li>
+          <li><svg><use href="#u-building"/></svg>Uso profesional y en casa</li>
+          <li><svg><use href="#u-chat"/></svg>Cotización directa por WhatsApp</li>
+        </ul>
+      </div>
+
+      <figure class="monitor" aria-label="Monitor de signos vitales que muestra el estado de tu cotización">
+        <div class="monitor-bezel">
+          <div class="monitor-top"><span class="led">MSC · MONITOR 01</span><span id="clock">--:--</span></div>
+          <div class="monitor-screen">
+            <div class="waves">
+              <span class="wave-tag ecg">II · ECG</span>
+              <span class="wave-tag pl">PLETH</span>
+              <canvas id="ecg" aria-hidden="true"></canvas>
+            </div>
+            <div class="nums">
+              <div class="num hr" id="hr-box"><span class="k">FC</span><span class="v" id="hr">72</span><span class="u">lpm</span></div>
+              <div class="num spo2"><span class="k">SpO₂</span><span class="v" id="spo2">98</span><span class="u">%</span></div>
+              <div class="num nibp"><span class="k">PNI</span><span class="v">118/76</span><span class="u">mmHg</span></div>
+            </div>
+          </div>
+          <div class="monitor-strip" id="strip">
+            <span class="grow">COTIZACIÓN · <b id="m-items">0</b> productos · <b id="m-units">0</b> unidades</span>
+            <button type="button" data-quote>VER LISTA</button>
+          </div>
+        </div>
+        <figcaption>Cada producto que agregas se suma a tu cotización. Tu lista queda guardada en este navegador.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="catalogo" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Catálogo</p>
+        <h2>Busca, filtra y agrega a tu cotización</h2>
+        <p class="lead">Elige una categoría o filtra por uso. Los equipos con ficha técnica la tienen disponible en su detalle.</p>
+      </div>
+
+      <div class="cat-tiles" id="cat-tiles" role="group" aria-label="Categorías"></div>
+
+      <div class="toolbar">
+        <div class="filter-field">
+          <svg aria-hidden="true"><use href="#u-search"/></svg>
+          <label class="sr-only" for="cat-q">Filtrar productos</label>
+          <input id="cat-q" type="search" placeholder="Filtrar por nombre o uso" autocomplete="off">
+          <button class="clear" type="button" id="cat-q-clear" aria-label="Limpiar búsqueda" hidden><svg><use href="#u-x"/></svg></button>
+        </div>
+        <div class="segmented" role="group" aria-label="Uso">
+          <button type="button" data-use="all" aria-pressed="true">Todos los usos</button>
+          <button type="button" data-use="hogar" aria-pressed="false">Para uso en casa</button>
+        </div>
+      </div>
+      <p class="result-note" id="result-note" aria-live="polite"></p>
+      <div class="grid" id="grid" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <section class="section" id="espacios" style="background:var(--surface);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Equipa tu espacio</p>
+        <h2>Listas base según el lugar que estás armando</h2>
+        <p class="lead">Elige el tipo de espacio y parte con una lista sugerida. Quita lo que no necesitas, ajusta cantidades y agrégala completa a tu cotización.</p>
+      </div>
+      <div class="kits">
+        <div class="kit-tabs" role="tablist" aria-label="Tipos de espacio" id="kit-tabs"></div>
+        <div class="kit-panel" role="tabpanel" id="kit-panel" aria-labelledby=""></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="instituciones">
+    <div class="wrap">
+      <div class="band reveal">
+        <div class="band-intro">
+          <div>
+            <p class="eyebrow">Instituciones y empresas</p>
+            <h2>Compras para clínicas, centros médicos y empresas</h2>
+          </div>
+          <p>Si equipas un box, un centro de salud o el área de primeros auxilios de tu empresa, envíanos la lista completa con cantidades. Preparamos una sola propuesta con precio y disponibilidad.</p>
+          <button class="btn btn-primary" type="button" data-quote>Armar cotización institucional <svg><use href="#u-arrow"/></svg></button>
+        </div>
+        <div class="band-points">
+          <div class="band-point"><svg><use href="#u-layers"/></svg><strong>Cotización por volumen</strong><p>Indica cantidades por producto y recibe una propuesta para tu institución.</p></div>
+          <div class="band-point"><svg><use href="#u-doc"/></svg><strong>Fichas técnicas</strong><p>Descarga la ficha de cada equipo para tu evaluación o proceso de compra.</p></div>
+          <div class="band-point"><svg><use href="#u-chat"/></svg><strong>Atención directa</strong><p>Te atendemos por WhatsApp y teléfono, de persona a persona.</p></div>
+          <div class="band-point"><svg><use href="#u-truck"/></svg><strong>Retiro o despacho</strong><p>Coordina el retiro en Puente Alto o consulta el despacho a tu comuna.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="como-cotizar" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Cómo cotizar</p>
+        <h2>De la lista al pedido en cuatro pasos</h2>
+      </div>
+      <ol class="steps">
+        <li class="step reveal"><strong>Arma tu lista</strong><p>Agrega productos desde el catálogo o parte con una lista base para tu espacio.</p></li>
+        <li class="step reveal"><strong>Envíala por WhatsApp</strong><p>El mensaje se escribe solo, con cada producto y su cantidad.</p></li>
+        <li class="step reveal"><strong>Recibe tu cotización</strong><p>Te respondemos con precio y disponibilidad de cada producto.</p></li>
+        <li class="step reveal"><strong>Retira o recibe</strong><p>Coordinamos el retiro en Puente Alto o el despacho a tu comuna.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="compromiso" style="background:var(--surface);border-block:1px solid var(--line)">
+    <div class="wrap solidarity">
+      <div class="copy reveal">
+        <p class="eyebrow">Compromiso</p>
+        <h2>Solidaridad sin fronteras: apoyo a Honduras en su emergencia sanitaria</h2>
+        <p>En diciembre de 2024 enviamos kits de insumos médicos y de sanitización para fortalecer la respuesta del sistema de salud hondureño. La Agencia de Regulación Sanitaria (ARSA) autorizó su importación de forma especial, gracias a la gestión de la Embajada de Honduras en Chile.</p>
+        <blockquote>Este envío reafirma nuestro compromiso con la salud y el bienestar, más allá de nuestras fronteras.<cite>— MSClinics</cite></blockquote>
+        <p><a class="btn btn-ghost" href="https://msclinics.cl/donacion-internacional/" target="_blank" rel="noopener">Leer la nota completa <svg><use href="#u-arrow"/></svg></a></p>
+      </div>
+      <div class="manifest reveal" aria-label="Resumen del envío">
+        <h3>Guía de envío · Ayuda humanitaria</h3>
+        <dl>
+          <dt>Origen</dt><dd>Santiago, Chile</dd>
+          <dt>Destino</dt><dd>Honduras</dd>
+          <dt>Carga</dt><dd>Kits de insumos médicos y de sanitización</dd>
+          <dt>Autorización</dt><dd>ARSA · 04-12-2024</dd>
+          <dt>Gestión</dt><dd>Embajada de Honduras en Chile</dd>
+          <dt>Traslado</dt><dd>Copa Airlines, sin costo</dd>
+        </dl>
+        <span class="stamp"><svg width="14" height="14"><use href="#u-check"/></svg>Entregado</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="nosotros">
+    <div class="wrap about">
+      <div class="about-copy reveal">
+        <p class="eyebrow">Nosotros</p>
+        <h2>Insumos de calidad a un precio accesible</h2>
+        <p>MSClinics es una empresa creada para brindar insumos y servicios de calidad a un precio accesible a quienes buscan protegerse de enfermedades respiratorias y de la piel, ya sea para uso convencional o profesional.</p>
+        <p>Atendemos a clínicas, centros médicos, empresas y familias que cuidan a alguien en casa, desde nuestra sede en Puente Alto.</p>
+      </div>
+      <div class="faq" id="faq">
+        <details class="reveal" open>
+          <summary>¿Venden a particulares o solo a instituciones?<svg><use href="#u-plus"/></svg></summary>
+          <p>A ambos. Trabajamos productos de uso profesional y de uso en casa, como catres clínicos, sillas de ruedas, bastones y artículos de protección personal.</p>
+        </details>
+        <details class="reveal">
+          <summary>¿Cómo sé el precio de un producto?<svg><use href="#u-plus"/></svg></summary>
+          <p>Agrega los productos a tu cotización y envíala por WhatsApp. Te respondemos con precio y disponibilidad para las cantidades que indicaste.</p>
+        </details>
+        <details class="reveal">
+          <summary>¿Dónde encuentro la ficha técnica de un equipo?<svg><use href="#u-plus"/></svg></summary>
+          <p>Los productos con ficha técnica la muestran en su detalle, con enlace de descarga. Si necesitas la de otro producto, pídela en el comentario de tu cotización.</p>
+        </details>
+        <details class="reveal">
+          <summary>¿Hacen despacho?<svg><use href="#u-plus"/></svg></summary>
+          <p>Escríbenos tu comuna junto con los productos que necesitas y te confirmamos las opciones de entrega o retiro en Puente Alto.</p>
+        </details>
+        <details class="reveal">
+          <summary>¿Mi lista se guarda si cierro la página?<svg><use href="#u-plus"/></svg></summary>
+          <p>Sí. Tu cotización queda guardada en este navegador, así que puedes volver más tarde y seguir agregando productos antes de enviarla.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacto" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Contacto</p>
+        <h2>Hablemos de lo que necesitas</h2>
+      </div>
+      <div class="contact">
+        <div class="contact-card reveal">
+          <h3>MSClinics</h3>
+          <div class="c-row">
+            <span class="ic"><svg><use href="#u-pin"/></svg></span>
+            <div><small>Dirección</small><span class="val">Av. Diego Portales 08994, Puente Alto</span></div>
+            <a class="copy-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%20Diego%20Portales%2008994%2C%20Puente%20Alto%2C%20Chile" target="_blank" rel="noopener">MAPA</a>
+          </div>
+          <div class="c-row">
+            <span class="ic"><svg><use href="#u-phone"/></svg></span>
+            <div><small>Teléfono y WhatsApp</small><a class="val" href="tel:+56950030765">+56 9 5003 0765</a></div>
+            <button class="copy-btn" type="button" data-copy="+56 9 5003 0765">COPIAR</button>
+          </div>
+          <div class="c-row">
+            <span class="ic"><svg><use href="#u-phone"/></svg></span>
+            <div><small>Teléfono</small><a class="val" href="tel:+56978893201">+56 9 7889 3201</a></div>
+            <button class="copy-btn" type="button" data-copy="+56 9 7889 3201">COPIAR</button>
+          </div>
+          <a class="btn btn-wa btn-block" id="wa-direct" href="https://wa.me/56950030765" target="_blank" rel="noopener"><svg><use href="#u-wa"/></svg>Escribir por WhatsApp</a>
+        </div>
+        <div class="contact-card reveal">
+          <h3>Déjanos tu consulta</h3>
+          <form class="form" id="contact-form" novalidate>
+            <div class="two">
+              <div class="field"><label for="cf-name">Nombre</label><input id="cf-name" name="name" autocomplete="name" required></div>
+              <div class="field"><label for="cf-org">Institución o empresa (opcional)</label><input id="cf-org" name="org" autocomplete="organization"></div>
+            </div>
+            <div class="two">
+              <div class="field"><label for="cf-comuna">Comuna</label><input id="cf-comuna" name="comuna" autocomplete="address-level2"></div>
+              <div class="field">
+                <label for="cf-type">Tipo de consulta</label>
+                <select id="cf-type" name="type">
+                  <option>Cotización</option>
+                  <option>Ficha técnica</option>
+                  <option>Despacho</option>
+                  <option>Otra consulta</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label for="cf-msg">Mensaje</label><textarea id="cf-msg" name="msg" required placeholder="Cuéntanos qué necesitas y en qué cantidad"></textarea></div>
+            <button class="btn btn-wa" type="submit"><svg><use href="#u-wa"/></svg>Enviar por WhatsApp</button>
+            <p class="form-note" id="cf-note">Se abrirá WhatsApp con tu mensaje listo para enviar. Si agregaste productos, se incluyen en el mensaje.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="#inicio" aria-label="MSClinics, volver al inicio">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="var(--accent)"/><path d="M6 21h8l2.5-6 4 13 3-9 2 2H34" fill="none" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="brand-name">MS<span>Clinics</span></span>
+        </a>
+        <p class="blurb">Insumos médicos, mobiliario clínico, protección personal y ortopedia para instituciones y hogares.</p>
+      </div>
+      <div>
+        <h4>Catálogo</h4>
+        <ul id="footer-cats"></ul>
+      </div>
+      <div>
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#compromiso">Compromiso</a></li>
+          <li><a href="#instituciones">Instituciones</a></li>
+          <li><a href="#faq">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li>Av. Diego Portales 08994, Puente Alto</li>
+          <li><a href="tel:+56950030765">+56 9 5003 0765</a></li>
+          <li><a href="tel:+56978893201">+56 9 7889 3201</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© <span id="year">2026</span> MSClinics · Puente Alto, Chile</span>
+      <span>Sitio por <a href="https://kumehub.cl" target="_blank" rel="noopener">Küme Hub</a></span>
+    </div>
+  </div>
+</footer>
+
+<a class="fab" id="fab" href="https://wa.me/56950030765" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><svg><use href="#u-wa"/></svg></a>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button type="button" data-quote>Ver lista</button></div>
+
+<!-- Cotización -->
+<dialog class="drawer" id="drawer" aria-labelledby="drawer-title">
+  <div class="drawer-head">
+    <div>
+      <h2 id="drawer-title">Mi cotización</h2>
+      <p id="drawer-sub">0 productos · 0 unidades</p>
+    </div>
+    <button class="icon-btn" type="button" data-close aria-label="Cerrar cotización"><svg><use href="#u-x"/></svg></button>
+  </div>
+  <div class="drawer-body">
+    <ul class="q-list" id="q-list"></ul>
+    <div class="q-empty" id="q-empty">
+      <svg><use href="#i-cart"/></svg>
+      <strong>Tu cotización está vacía</strong>
+      <p>Agrega productos desde el catálogo o parte con una lista base para tu espacio.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <a class="btn btn-primary btn-sm" href="#catalogo" data-close>Ver catálogo</a>
+        <a class="btn btn-ghost btn-sm" href="#espacios" data-close>Equipa tu espacio</a>
+      </div>
+    </div>
+    <form class="form" id="q-form" hidden>
+      <div class="two">
+        <div class="field"><label for="q-name">Nombre</label><input id="q-name" autocomplete="name"></div>
+        <div class="field"><label for="q-comuna">Comuna</label><input id="q-comuna" autocomplete="address-level2"></div>
+      </div>
+      <div class="field"><label for="q-org">Institución o empresa (opcional)</label><input id="q-org" autocomplete="organization"></div>
+      <div class="field"><label for="q-note">Comentario (opcional)</label><textarea id="q-note" rows="3" placeholder="Plazos, despacho, fichas técnicas que necesitas…"></textarea></div>
+      <details class="preview">
+        <summary>VISTA PREVIA DEL MENSAJE</summary>
+        <pre id="q-preview"></pre>
+      </details>
+    </form>
+  </div>
+  <div class="drawer-foot" id="q-foot" hidden>
+    <a class="btn btn-wa btn-block" id="q-send" href="https://wa.me/56950030765" target="_blank" rel="noopener"><svg><use href="#u-wa"/></svg>Enviar cotización por WhatsApp</a>
+    <div class="row">
+      <button class="btn btn-ghost btn-sm" type="button" id="q-copy">Copiar texto</button>
+      <button class="btn btn-ghost btn-sm" type="button" id="q-clear"><svg><use href="#u-trash"/></svg>Vaciar</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Detalle de producto -->
+<dialog class="modal" id="pd" aria-labelledby="pd-title">
+  <button class="icon-btn close-x" type="button" data-close aria-label="Cerrar detalle"><svg><use href="#u-x"/></svg></button>
+  <div class="pd" id="pd-content"></div>
+</dialog>
+
+<!-- Búsqueda rápida -->
+<dialog class="palette" id="palette" aria-label="Búsqueda rápida">
+  <div class="palette-input">
+    <svg aria-hidden="true"><use href="#u-search"/></svg>
+    <label class="sr-only" for="pal-q">Buscar productos y secciones</label>
+    <input id="pal-q" type="text" placeholder="Busca un producto o una sección…" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list">
+    <kbd>Esc</kbd>
+  </div>
+  <ul id="pal-list" role="listbox" aria-label="Resultados"></ul>
+  <div class="palette-foot">
+    <span><kbd>↑</kbd><kbd>↓</kbd> moverse</span>
+    <span><kbd>Enter</kbd> abrir</span>
+    <span><kbd>Shift</kbd>+<kbd>Enter</kbd> agregar a cotización</span>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  'use strict';
+
+  const WA_NUMBER = '56950030765';
+  const FICHAS = 'https://msclinics.cl/wp-content/uploads/2020/09/';
+
+  const CATS = {
+    mobiliario: { name: 'Mobiliario clínico', icon: 'bed' },
+    equipos: { name: 'Equipos médicos', icon: 'monitor' },
+    proteccion: { name: 'Protección personal', icon: 'mask' },
+    ortopedia: { name: 'Ortopedia y movilidad', icon: 'wheelchair' },
+    insumos: { name: 'Instrumental e insumos', icon: 'box' },
+  };
+
+  // Catálogo de muestra armado con productos publicados en msclinics.cl.
+  // En producción se alimenta desde WooCommerce (ver README).
+  const PRODUCTS = [
+    { id: 'catre-3f', cat: 'mobiliario', icon: 'bed', hogar: true, name: 'Catre clínico manual 3 funciones', desc: 'Cama clínica con tres ajustes de posición accionados por manivela. Para hospitalización domiciliaria, residencias y salas clínicas.', ficha: FICHAS + 'FICHA-TECNICA-CATRE-CLINICO-MANUAL-3-FUNCIONES.pdf', kw: 'cama hospitalaria' },
+    { id: 'camilla-traslado', cat: 'mobiliario', icon: 'stretcher', name: 'Camilla de traslado de pacientes, esmaltada', desc: 'Camilla con ruedas para el traslado de pacientes dentro de clínicas, centros médicos y servicios de urgencia.', ficha: FICHAS + 'FICHA-TECNICA-CAMILLA-TRASLADO-PACIENTES.pdf', kw: 'urgencia transporte' },
+    { id: 'camilla-examen', cat: 'mobiliario', icon: 'exam', name: 'Camilla de examen', desc: 'Camilla para box de atención y consulta, con respaldo elevado para examinar al paciente.', kw: 'box consulta' },
+    { id: 'mesa-toma-muestra', cat: 'mobiliario', icon: 'table', name: 'Mesa toma de muestra', desc: 'Mesa con apoyabrazo para toma de muestras y procedimientos en laboratorios y centros de salud.', kw: 'laboratorio sangre' },
+    { id: 'carro-post-operado', cat: 'mobiliario', icon: 'cart', name: 'Carro post-operado esmaltado', desc: 'Carro con repisas para insumos y medicamentos en salas de recuperación y procedimientos.', kw: 'carro curaciones' },
+    { id: 'monitor-m3t', cat: 'equipos', icon: 'monitor', name: 'Monitor de signos vitales Meditech M-3T', desc: 'Monitor para el control de signos vitales en consulta, procedimientos y atención domiciliaria.', ficha: FICHAS + 'FICHA-TECNICA-MONITOR-SIGNOS-VITALES-MEDITECH-M-3T-1.pdf', kw: 'multiparametro saturacion presion' },
+    { id: 'monitor-m7', cat: 'equipos', icon: 'monitor', name: 'Monitor de signos vitales Meditech M-7', desc: 'Monitor de signos vitales de la línea Meditech para box de atención y salas de procedimientos.', kw: 'multiparametro saturacion presion' },
+    { id: 'monitor-m12', cat: 'equipos', icon: 'monitor', name: 'Monitor de signos vitales Meditech M-12', desc: 'Monitor de signos vitales de la línea Meditech para salas de urgencia, recuperación y hospitalización.', kw: 'multiparametro saturacion presion' },
+    { id: 'negatoscopio', cat: 'equipos', icon: 'lightbox', name: 'Negatoscopio LED 2 carillas', desc: 'Visor de radiografías con iluminación LED y dos cuerpos para comparar placas lado a lado.', kw: 'radiografia rayos x' },
+    { id: 'flujometro', cat: 'equipos', icon: 'flow', hogar: true, name: 'Flujómetro Mini-Wright®', desc: 'Medidor de flujo espiratorio máximo para el seguimiento de pacientes con asma y otras enfermedades respiratorias.', kw: 'peak flow asma respiratorio' },
+    { id: 'resucitador', cat: 'equipos', icon: 'bag', name: 'Resucitador manual adulto con reservorio · Topster', desc: 'Bolsa de reanimación manual para adulto, con reservorio de oxígeno. Para carros de paro y botiquines de emergencia.', kw: 'ambu reanimacion emergencia' },
+    { id: 'mascarilla', cat: 'proteccion', icon: 'mask', hogar: true, name: 'Mascarillas quirúrgicas', desc: 'Mascarillas desechables para protección respiratoria en atención clínica y uso diario.', kw: 'tapabocas desechable' },
+    { id: 'guantes', cat: 'proteccion', icon: 'glove', hogar: true, name: 'Guantes desechables', desc: 'Guantes de examen desechables para procedimientos, curaciones y aseo.', kw: 'nitrilo examen' },
+    { id: 'escudo', cat: 'proteccion', icon: 'shield', name: 'Escudo facial', desc: 'Protector facial transparente contra salpicaduras, para usar junto a la mascarilla.', kw: 'careta visor' },
+    { id: 'lentes', cat: 'proteccion', icon: 'glasses', name: 'Lentes de seguridad', desc: 'Lentes de protección ocular para procedimientos clínicos y trabajo de laboratorio.', kw: 'antiparras gafas' },
+    { id: 'alcohol-gel', cat: 'proteccion', icon: 'pump', hogar: true, name: 'Alcohol gel', desc: 'Gel desinfectante de manos para recepción, box de atención y uso personal.', kw: 'sanitizante manos' },
+    { id: 'alcohol-aerosol', cat: 'proteccion', icon: 'spray', hogar: true, name: 'Alcohol desnaturalizado microfiltrado 70° · aerosol 100 ml', desc: 'Alcohol al 70° en formato aerosol de bolsillo para desinfectar superficies y manos.', kw: 'sanitizante desinfectante' },
+    { id: 'alcohol-isopropilico', cat: 'proteccion', icon: 'spray', hogar: true, name: 'Alcohol isopropílico 70° · 1 L con atomizador', desc: 'Alcohol isopropílico al 70° con atomizador, para desinfección de superficies y equipos.', kw: 'sanitizante desinfectante' },
+    { id: 'toallas', cat: 'proteccion', icon: 'wipes', hogar: true, name: 'Toallas desinfectantes', desc: 'Toallas húmedas desinfectantes para limpiar superficies, camillas y equipos entre pacientes.', kw: 'toallitas limpieza' },
+    { id: 'silla-g909b', cat: 'ortopedia', icon: 'wheelchair', hogar: true, name: 'Silla de ruedas estándar G-909B', desc: 'Silla de ruedas estándar para traslado diario en casa, clínicas y residencias.', kw: 'movilidad' },
+    { id: 'silla-g809', cat: 'ortopedia', icon: 'wheelchair', hogar: true, name: 'Silla de ruedas G-809', desc: 'Silla de ruedas para uso en casa e instituciones de salud.', kw: 'movilidad' },
+    { id: 'andador', cat: 'ortopedia', icon: 'walker', hogar: true, name: 'Andador', desc: 'Andador de apoyo para caminar con mayor estabilidad durante la recuperación.', kw: 'burrito movilidad adulto mayor' },
+    { id: 'baston-arana', cat: 'ortopedia', icon: 'cane', hogar: true, name: 'Bastón 4 apoyos (araña)', desc: 'Bastón con base de cuatro puntos de apoyo, más estable que un bastón simple.', kw: 'movilidad adulto mayor' },
+    { id: 'martillo-taylor', cat: 'insumos', icon: 'hammer', name: 'Martillo de reflejos Taylor 20 cm · Riester', desc: 'Martillo de reflejos tipo Taylor en acero inoxidable, de la marca alemana Riester.', kw: 'instrumental neurologia' },
+    { id: 'chata', cat: 'insumos', icon: 'bedpan', hogar: true, name: 'Chata anatómica plástica', desc: 'Chata de forma anatómica para pacientes postrados, fácil de lavar.', kw: 'bacinica postrado' },
+    { id: 'caja-6l', cat: 'insumos', icon: 'box', hogar: true, name: 'Caja organizadora 6 litros', desc: 'Caja plástica con tapa para ordenar insumos en box, carros o botiquines.', kw: 'orden botiquin' },
+  ];
+  const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+
+  const KITS = [
+    { id: 'box', icon: 'exam', name: 'Box de atención', blurb: 'Consulta médica o de enfermería', desc: 'Lo básico para atender pacientes en un box: camilla, control de signos vitales e higiene entre atenciones.',
+      items: [['camilla-examen', 1], ['monitor-m7', 1], ['negatoscopio', 1], ['martillo-taylor', 1], ['guantes', 10], ['mascarilla', 10], ['alcohol-isopropilico', 2], ['toallas', 4]] },
+    { id: 'muestras', icon: 'syringe', name: 'Toma de muestras', blurb: 'Laboratorio o sala de procedimientos', desc: 'Mesa de trabajo, protección para el personal y desinfección continua de superficies.',
+      items: [['mesa-toma-muestra', 1], ['guantes', 20], ['mascarilla', 20], ['escudo', 4], ['alcohol-aerosol', 6], ['toallas', 6], ['caja-6l', 3]] },
+    { id: 'hogar', icon: 'home', name: 'Cuidado en casa', blurb: 'Adulto mayor o paciente postrado', desc: 'Para acondicionar el hogar de alguien que necesita cuidados: descanso, movilidad e higiene.',
+      items: [['catre-3f', 1], ['silla-g909b', 1], ['andador', 1], ['baston-arana', 1], ['chata', 1], ['guantes', 5], ['toallas', 3]] },
+    { id: 'urgencia', icon: 'siren', name: 'Urgencia y traslado', blurb: 'Sala de urgencia o primeros auxilios', desc: 'Equipamiento para recibir, monitorear y trasladar pacientes en una sala de urgencia o enfermería de empresa.',
+      items: [['camilla-traslado', 1], ['resucitador', 1], ['monitor-m12', 1], ['carro-post-operado', 1], ['escudo', 4], ['guantes', 10]] },
+  ];
+
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const icon = (id, cls = '') => `<svg class="${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+  const ui = id => `<svg aria-hidden="true"><use href="#u-${id}"/></svg>`;
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  };
+
+  /* ---------- Tema ---------- */
+  const root = document.documentElement;
+  const themeBtn = $('#theme-btn');
+  const savedTheme = store.get('msc-theme', null);
+  if (savedTheme === 'light' || savedTheme === 'dark') root.dataset.theme = savedTheme;
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  function paintThemeBtn() {
+    const dark = isDark();
+    themeBtn.innerHTML = ui(dark ? 'sun' : 'moon');
+    themeBtn.setAttribute('aria-label', dark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+  }
+  function toggleTheme() {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    store.set('msc-theme', root.dataset.theme);
+    paintThemeBtn();
+  }
+  themeBtn.addEventListener('click', toggleTheme);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paintThemeBtn);
+  paintThemeBtn();
+
+  /* ---------- Menú móvil ---------- */
+  const menuBtn = $('#menu-btn'), mobileNav = $('#mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const open = mobileNav.hidden;
+    mobileNav.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.innerHTML = ui(open ? 'x' : 'menu');
+  });
+  mobileNav.addEventListener('click', e => {
+    if (e.target.closest('a')) { mobileNav.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.innerHTML = ui('menu'); }
+  });
+
+  /* ---------- Cotización (estado) ---------- */
+  let cart = {};
+  const rawCart = store.get('msc-cart', {});
+  for (const [id, q] of Object.entries(rawCart || {})) if (byId[id] && q > 0) cart[id] = Math.min(999, Math.floor(q));
+  const customer = Object.assign({ name: '', comuna: '', org: '', note: '' }, store.get('msc-customer', {}));
+
+  const totals = () => {
+    const ids = Object.keys(cart);
+    return { items: ids.length, units: ids.reduce((s, id) => s + cart[id], 0) };
+  };
+
+  function setQty(id, qty, { silent = false } = {}) {
+    const before = cart[id] || 0;
+    qty = Math.max(0, Math.min(999, qty | 0));
+    if (qty === 0) delete cart[id]; else cart[id] = qty;
+    store.set('msc-cart', cart);
+    syncCart();
+    if (!silent && qty > before) { heartbeat(); toast(`Agregado: ${byId[id].name}`); }
+  }
+  function addMany(pairs) {
+    for (const [id, q] of pairs) cart[id] = Math.min(999, (cart[id] || 0) + q);
+    store.set('msc-cart', cart);
+    syncCart();
+    heartbeat();
+    toast(`${plural(pairs.length, 'producto agregado', 'productos agregados')} a tu cotización`);
+  }
+
+  function actionsHTML(id, big = false) {
+    const q = cart[id] || 0;
+    const name = esc(byId[id].name);
+    if (!q) return `<button class="btn btn-primary ${big ? '' : 'btn-sm btn-block'}" type="button" data-add="${id}" aria-label="Agregar ${name} a la cotización">${ui('plus')}Agregar a cotización</button>`;
+    return `<div class="in-quote">
+      <div class="stepper" role="group" aria-label="Cantidad de ${name}">
+        <button type="button" data-dec="${id}" aria-label="Quitar una unidad">${ui('minus')}</button>
+        <output aria-live="polite">${q}</output>
+        <button type="button" data-inc="${id}" aria-label="Agregar una unidad">${ui('plus')}</button>
+      </div>
+      <small>${ui('check').replace('<svg', '<svg width="12" height="12" style="display:inline;vertical-align:-2px"')} EN COTIZACIÓN</small>
+    </div>`;
+  }
+
+  function syncCart() {
+    const t = totals();
+    const badge = $('#count-badge');
+    badge.hidden = t.items === 0;
+    badge.textContent = t.items;
+    $$('.quote-btn').forEach(b => b.setAttribute('aria-label', `Abrir mi cotización (${plural(t.items, 'producto', 'productos')})`));
+    $('#m-items').textContent = String(t.items).padStart(2, '0');
+    $('#m-units').textContent = String(t.units).padStart(2, '0');
+    $$('[data-actions]').forEach(el => { el.innerHTML = actionsHTML(el.dataset.actions, el.hasAttribute('data-big')); });
+    renderDrawer();
+    renderKitFoot();
+  }
+
+  /* ---------- Toast ---------- */
+  let toastTimer;
+  function toast(msg) {
+    const el = $('#toast');
+    if (document.querySelector('dialog[open]')) return;
+    $('#toast-msg').textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+  }
+
+  /* ---------- Catálogo ---------- */
+  const filt = { cat: 'all', use: 'all', q: '' };
+  const tiles = $('#cat-tiles');
+  function renderTiles() {
+    const tile = (key, name, ic, n) => `<button class="cat-tile" type="button" data-cat="${key}" aria-pressed="${filt.cat === key}">${icon(ic)}<strong>${name}</strong><span>${plural(n, 'producto', 'productos')}</span></button>`;
+    tiles.innerHTML = tile('all', 'Todo el catálogo', 'all', PRODUCTS.length) +
+      Object.entries(CATS).map(([k, c]) => tile(k, c.name, c.icon, PRODUCTS.filter(p => p.cat === k).length)).join('');
+    $('#footer-cats').innerHTML = Object.entries(CATS).map(([k, c]) => `<li><button type="button" data-goto-cat="${k}">${c.name}</button></li>`).join('');
+  }
+
+  function matches(p, q) {
+    if (!q) return true;
+    const hay = norm(`${p.name} ${p.desc} ${CATS[p.cat].name} ${p.kw || ''} ${p.hogar ? 'hogar casa' : ''}`);
+    return norm(q).split(/\s+/).filter(Boolean).every(t => hay.includes(t));
+  }
+  const visible = () => PRODUCTS.filter(p =>
+    (filt.cat === 'all' || p.cat === filt.cat) &&
+    (filt.use === 'all' || p.hogar) &&
+    matches(p, filt.q));
+
+  function cardHTML(p) {
+    return `<article class="card" style="view-transition-name:p-${p.id}">
+      <button class="media" type="button" data-open="${p.id}" aria-label="Ver detalle de ${esc(p.name)}">
+        ${icon(p.icon)}
+        ${p.hogar ? '<span class="flag">También en casa</span>' : ''}
+      </button>
+      <div class="card-body">
+        <p class="eyebrow">${CATS[p.cat].name}</p>
+        <h3><button type="button" data-open="${p.id}">${esc(p.name)}</button></h3>
+        <p class="desc">${esc(p.desc)}</p>
+        ${p.ficha ? `<div class="tags"><span class="tag doc">${ui('doc')}Ficha técnica PDF</span></div>` : ''}
+        <div class="card-foot" data-actions="${p.id}">${actionsHTML(p.id)}</div>
+      </div>
+    </article>`;
+  }
+
+  function renderGrid() {
+    const list = visible();
+    const grid = $('#grid');
+    grid.innerHTML = list.length ? list.map(cardHTML).join('') : `<div class="empty">
+        ${icon('all').replace('<svg', '<svg width="48" height="48"')}
+        <strong>${filt.q ? `No encontramos “${esc(filt.q)}”${filt.cat !== 'all' ? ' en ' + CATS[filt.cat].name : ''}` : 'No hay productos con estos filtros'}</strong>
+        <p>Prueba con otra palabra o pregúntanos directamente: trabajamos más productos de los que aparecen aquí.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          <button class="btn btn-ghost btn-sm" type="button" id="reset-filters">Ver todo el catálogo</button>
+          <a class="btn btn-wa btn-sm" target="_blank" rel="noopener" href="https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Hola MSClinics, busco: ' + (filt.q || 'un producto que no encuentro en el catálogo'))}">${ui('wa')}Consultar por WhatsApp</a>
+        </div>
+      </div>`;
+    const catLabel = filt.cat === 'all' ? 'todo el catálogo' : CATS[filt.cat].name;
+    $('#result-note').textContent = `${plural(list.length, 'producto', 'productos')} · ${catLabel}${filt.use === 'hogar' ? ' · uso en casa' : ''}${filt.q ? ` · “${filt.q}”` : ''}`;
+    $$('.cat-tile', tiles).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cat === filt.cat)));
+    $$('[data-use]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.use === filt.use)));
+    $('#cat-q-clear').hidden = !filt.q;
+  }
+
+  function withTransition(fn) {
+    if (document.startViewTransition && !reduced) document.startViewTransition(fn);
+    else fn();
+  }
+  function applyFilter(patch) { Object.assign(filt, patch); withTransition(renderGrid); }
+
+  tiles.addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (b) applyFilter({ cat: b.dataset.cat }); });
+  $$('[data-use]').forEach(b => b.addEventListener('click', () => applyFilter({ use: b.dataset.use })));
+  const catQ = $('#cat-q');
+  let qTimer;
+  catQ.addEventListener('input', () => { clearTimeout(qTimer); qTimer = setTimeout(() => applyFilter({ q: catQ.value.trim() }), 120); });
+  $('#cat-q-clear').addEventListener('click', () => { catQ.value = ''; applyFilter({ q: '' }); catQ.focus(); });
+
+  function searchCatalog(q) {
+    catQ.value = q;
+    Object.assign(filt, { q, cat: 'all', use: 'all' });
+    renderGrid();
+    $('#catalogo').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+  }
+  $('#hero-search').addEventListener('submit', e => { e.preventDefault(); searchCatalog($('#hero-q').value.trim()); });
+  $$('[data-q]').forEach(b => b.addEventListener('click', () => { $('#hero-q').value = b.dataset.q; searchCatalog(b.dataset.q); }));
+
+  /* ---------- Acciones globales (delegadas) ---------- */
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-add],[data-inc],[data-dec],[data-open],[data-quote],[data-palette],[data-remove],[data-copy],[data-goto-cat],#reset-filters');
+    if (!t) return;
+    const qtyKey = t.dataset.add ? 'add' : t.dataset.inc ? 'inc' : t.dataset.dec ? 'dec' : null;
+    const qtyId = t.dataset.add || t.dataset.inc || t.dataset.dec;
+    const scope = qtyKey && t.closest('[data-actions], #q-list, #palette');
+    if (t.dataset.add) setQty(t.dataset.add, (cart[t.dataset.add] || 0) + 1);
+    else if (t.dataset.inc) setQty(t.dataset.inc, (cart[t.dataset.inc] || 0) + 1);
+    else if (t.dataset.dec) setQty(t.dataset.dec, (cart[t.dataset.dec] || 0) - 1);
+    else if (t.dataset.remove) setQty(t.dataset.remove, 0);
+    else if (t.dataset.open) openProduct(t.dataset.open);
+    else if (t.hasAttribute('data-quote')) openDrawer();
+    else if (t.hasAttribute('data-palette')) openPalette();
+    else if (t.dataset.copy) copyText(t.dataset.copy, t);
+    else if (t.dataset.gotoCat) { Object.assign(filt, { cat: t.dataset.gotoCat, q: '', use: 'all' }); catQ.value = ''; renderGrid(); $('#catalogo').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); }
+    else if (t.id === 'reset-filters') { catQ.value = ''; applyFilter({ cat: 'all', use: 'all', q: '' }); }
+    if (scope && document.contains(scope)) {
+      const next = scope.querySelector(`[data-${qtyKey === 'add' ? 'inc' : qtyKey}="${qtyId}"]`) || scope.querySelector(`[data-add="${qtyId}"]`);
+      if (next && !next.disabled) next.focus();
+    }
+  });
+
+  async function copyText(text, btn) {
+    const original = btn.textContent;
+    try { await navigator.clipboard.writeText(text); btn.textContent = 'COPIADO'; }
+    catch { btn.textContent = 'SELECCIONA Y COPIA'; }
+    setTimeout(() => { btn.textContent = original; }, 1800);
+  }
+
+  /* ---------- Diálogos ---------- */
+  $$('dialog').forEach(d => {
+    d.addEventListener('click', e => {
+      if (e.target === d) d.close();
+      if (e.target.closest('[data-close]')) d.close();
+    });
+  });
+
+  // Detalle de producto
+  const pd = $('#pd');
+  function openProduct(id) {
+    const p = byId[id]; if (!p) return;
+    const pal = $('#palette'); if (pal.open) pal.close();
+    const waText = encodeURIComponent(`Hola MSClinics, quiero consultar por: ${p.name}`);
+    $('#pd-content').innerHTML = `
+      <div class="media" aria-hidden="true">${icon(p.icon)}</div>
+      <div class="pd-body">
+        <p class="eyebrow">${CATS[p.cat].name}</p>
+        <h2 id="pd-title">${esc(p.name)}</h2>
+        <p>${esc(p.desc)}</p>
+        <dl>
+          <dt>Uso</dt><dd>${p.hogar ? 'Profesional y en casa' : 'Profesional'}</dd>
+          <dt>Precio</dt><dd>A cotizar según cantidad</dd>
+          <dt>Ficha</dt><dd>${p.ficha ? `<a href="${p.ficha}" target="_blank" rel="noopener">Descargar ficha técnica (PDF)</a>` : 'Solicítala en tu cotización'}</dd>
+        </dl>
+        <div class="pd-actions">
+          <div data-actions="${p.id}" data-big>${actionsHTML(p.id, true)}</div>
+          <a class="btn btn-ghost" href="https://wa.me/${WA_NUMBER}?text=${waText}" target="_blank" rel="noopener">${ui('wa')}Preguntar por este producto</a>
+        </div>
+      </div>`;
+    pd.showModal();
+  }
+  pd.addEventListener('close', () => { $('#pd-content').innerHTML = ''; });
+
+  // Cotización
+  const drawer = $('#drawer');
+  const qFields = { name: $('#q-name'), comuna: $('#q-comuna'), org: $('#q-org'), note: $('#q-note') };
+  for (const [k, el] of Object.entries(qFields)) {
+    el.value = customer[k] || '';
+    el.addEventListener('input', () => { customer[k] = el.value; store.set('msc-customer', customer); updateMessage(); });
+  }
+
+  function buildMessage(extra) {
+    const lines = ['Hola MSClinics, quiero cotizar:', ''];
+    for (const [id, q] of Object.entries(cart)) lines.push(`• ${q} × ${byId[id].name}`);
+    if (!Object.keys(cart).length) lines.length = 1;
+    const info = [];
+    const c = extra || customer;
+    if (c.name) info.push(`Nombre: ${c.name}`);
+    if (c.org) info.push(`Institución: ${c.org}`);
+    if (c.comuna) info.push(`Comuna: ${c.comuna}`);
+    if (c.type) info.push(`Consulta: ${c.type}`);
+    if (c.note) info.push(`Comentario: ${c.note}`);
+    if (info.length) lines.push('', ...info);
+    return lines.join('\n');
+  }
+  const waHref = msg => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  function updateMessage() {
+    const msg = buildMessage();
+    $('#q-preview').textContent = msg;
+    $('#q-send').href = waHref(msg);
+  }
+
+  function renderDrawer() {
+    const ids = Object.keys(cart);
+    const t = totals();
+    $('#drawer-sub').textContent = `${plural(t.items, 'producto', 'productos')} · ${plural(t.units, 'unidad', 'unidades')}`;
+    $('#q-empty').hidden = ids.length > 0;
+    $('#q-form').hidden = ids.length === 0;
+    $('#q-foot').hidden = ids.length === 0;
+    $('#q-list').innerHTML = ids.map(id => {
+      const p = byId[id];
+      return `<li class="q-item">
+        <span class="thumb">${icon(p.icon)}</span>
+        <div>
+          <strong>${esc(p.name)}</strong>
+          <small>${CATS[p.cat].name}</small>
+          <div class="ctl">
+            <div class="stepper" role="group" aria-label="Cantidad de ${esc(p.name)}">
+              <button type="button" data-dec="${id}" aria-label="Quitar una unidad">${ui('minus')}</button>
+              <output>${cart[id]}</output>
+              <button type="button" data-inc="${id}" aria-label="Agregar una unidad">${ui('plus')}</button>
+            </div>
+            <button class="link-btn" type="button" data-remove="${id}">Quitar</button>
+          </div>
+        </div>
+      </li>`;
+    }).join('');
+    updateMessage();
+  }
+  function openDrawer() {
+    const pal = $('#palette'); if (pal.open) pal.close();
+    if (pd.open) pd.close();
+    renderDrawer();
+    drawer.showModal();
+  }
+  $('#q-copy').addEventListener('click', e => copyText(buildMessage(), e.currentTarget));
+  // Vaciar pide confirmación dentro del mismo botón
+  const clearBtn = $('#q-clear');
+  let clearArmed = false, clearTimer;
+  clearBtn.addEventListener('click', () => {
+    if (!clearArmed) {
+      clearArmed = true;
+      clearBtn.innerHTML = `${ui('trash')}¿Vaciar la lista?`;
+      clearTimer = setTimeout(() => { clearArmed = false; clearBtn.innerHTML = `${ui('trash')}Vaciar`; }, 3000);
+      return;
+    }
+    clearTimeout(clearTimer);
+    clearArmed = false;
+    clearBtn.innerHTML = `${ui('trash')}Vaciar`;
+    cart = {};
+    store.set('msc-cart', cart);
+    syncCart();
+  });
+
+  /* ---------- Búsqueda rápida (Ctrl/⌘ K) ---------- */
+  const pal = $('#palette'), palQ = $('#pal-q'), palList = $('#pal-list');
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  $('#kbd-hint').textContent = isMac ? '⌘ K' : 'Ctrl K';
+  const SECTIONS = [
+    { label: 'Ver mi cotización', sub: 'Revisa y envía tu lista', run: () => openDrawer(), ic: 'i-cart' },
+    { label: 'Equipa tu espacio', sub: 'Listas base por tipo de espacio', run: () => go('#espacios'), ic: 'i-home' },
+    { label: 'Compras institucionales', sub: 'Clínicas, centros médicos y empresas', run: () => go('#instituciones'), ic: 'u-building' },
+    { label: 'Contacto', sub: 'Dirección y teléfonos', run: () => go('#contacto'), ic: 'u-pin' },
+    { label: 'Cambiar tema claro/oscuro', sub: 'Preferencia de visualización', run: () => toggleTheme(), ic: 'u-moon' },
+  ];
+  function go(sel) { $(sel).scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); }
+  let palItems = [], palIndex = 0;
+  function renderPalette() {
+    const q = palQ.value.trim();
+    const prods = PRODUCTS.filter(p => matches(p, q)).slice(0, q ? 8 : 5);
+    const secs = SECTIONS.filter(s => !q || norm(s.label + ' ' + s.sub).includes(norm(q)));
+    palItems = [...prods.map(p => ({ type: 'p', p })), ...secs.map(s => ({ type: 's', s }))];
+    palIndex = Math.min(palIndex, Math.max(0, palItems.length - 1));
+    let html = '', i = 0;
+    if (prods.length) {
+      html += `<li class="group" role="presentation">${q ? 'Productos' : 'Sugerencias'}</li>`;
+      html += prods.map(p => `<li role="option" id="pal-${i}" data-i="${i}" aria-selected="${i++ === palIndex}">
+        <span class="ic">${icon(p.icon)}</span>
+        <span><strong>${esc(p.name)}</strong><small>${CATS[p.cat].name}${cart[p.id] ? ` · ${cart[p.id]} en cotización` : ''}</small></span>
+        <span class="hint">${cart[p.id] ? '✓' : ''}</span></li>`).join('');
+    }
+    if (secs.length) {
+      html += `<li class="group" role="presentation">Ir a</li>`;
+      html += secs.map(s => `<li role="option" id="pal-${i}" data-i="${i}" aria-selected="${i++ === palIndex}">
+        <span class="ic"><svg aria-hidden="true"><use href="#${s.ic}"/></svg></span><span><strong>${s.label}</strong><small>${s.sub}</small></span><span class="hint">↵</span></li>`).join('');
+    }
+    if (!palItems.length) html = `<li class="none" role="presentation">Sin resultados para “${esc(q)}”. Escríbenos y te ayudamos a encontrarlo.</li>`;
+    palList.innerHTML = html;
+    palQ.setAttribute('aria-activedescendant', palItems.length ? `pal-${palIndex}` : '');
+  }
+  function movePal(d) {
+    if (!palItems.length) return;
+    palIndex = (palIndex + d + palItems.length) % palItems.length;
+    $$('[role="option"]', palList).forEach(li => li.setAttribute('aria-selected', String(+li.dataset.i === palIndex)));
+    const cur = $(`#pal-${palIndex}`); cur && cur.scrollIntoView({ block: 'nearest' });
+    palQ.setAttribute('aria-activedescendant', `pal-${palIndex}`);
+  }
+  function runPal(i, add) {
+    const it = palItems[i]; if (!it) return;
+    if (it.type === 'p') {
+      if (add) { setQty(it.p.id, (cart[it.p.id] || 0) + 1); renderPalette(); }
+      else openProduct(it.p.id);
+    } else { pal.close(); it.s.run(); }
+  }
+  function openPalette(initial = '') {
+    if (pd.open) pd.close();
+    if (drawer.open) drawer.close();
+    palQ.value = initial; palIndex = 0; renderPalette();
+    pal.showModal(); palQ.focus();
+  }
+  palQ.addEventListener('input', () => { palIndex = 0; renderPalette(); });
+  palQ.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); movePal(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); movePal(-1); }
+    else if (e.key === 'Enter') { e.preventDefault(); runPal(palIndex, e.shiftKey); }
+  });
+  palList.addEventListener('click', e => { const li = e.target.closest('[data-i]'); if (li) runPal(+li.dataset.i, false); });
+  document.addEventListener('keydown', e => {
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName) || document.activeElement?.isContentEditable;
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); pal.open ? pal.close() : openPalette(); }
+    else if (e.key === '/' && !typing && !document.querySelector('dialog[open]')) { e.preventDefault(); openPalette(); }
+  });
+
+  /* ---------- Equipa tu espacio ---------- */
+  let kitId = 'box';
+  const kitSel = {}; // kitId -> { productId: qty | 0 }
+  KITS.forEach(k => { kitSel[k.id] = Object.fromEntries(k.items); });
+  function renderKitTabs() {
+    $('#kit-tabs').innerHTML = KITS.map(k => `<button class="kit-tab" type="button" role="tab" id="tab-${k.id}" aria-controls="kit-panel" aria-selected="${k.id === kitId}" tabindex="${k.id === kitId ? 0 : -1}" data-kit="${k.id}">
+      ${icon(k.icon)}<strong>${k.name}</strong><span>${k.blurb}</span></button>`).join('');
+  }
+  function renderKit() {
+    const k = KITS.find(x => x.id === kitId);
+    const sel = kitSel[kitId];
+    const panel = $('#kit-panel');
+    panel.setAttribute('aria-labelledby', `tab-${k.id}`);
+    panel.innerHTML = `<header><div><p class="eyebrow">Lista base</p><h3>${k.name}</h3></div><p>${k.desc}</p></header>
+      <ul class="kit-list">${k.items.map(([id, def]) => {
+        const p = byId[id], q = sel[id], on = q > 0;
+        return `<li class="kit-item ${on ? '' : 'off'}">
+          <input type="checkbox" id="kit-${k.id}-${id}" data-kit-toggle="${id}" ${on ? 'checked' : ''}>
+          <span class="thumb">${icon(p.icon)}</span>
+          <label for="kit-${k.id}-${id}">${esc(p.name)}<small>${CATS[p.cat].name}</small></label>
+          <div class="stepper" role="group" aria-label="Cantidad de ${esc(p.name)}">
+            <button type="button" data-kit-dec="${id}" aria-label="Quitar una unidad" ${on ? '' : 'disabled'}>${ui('minus')}</button>
+            <output>${on ? q : '–'}</output>
+            <button type="button" data-kit-inc="${id}" aria-label="Agregar una unidad">${ui('plus')}</button>
+          </div>
+        </li>`;
+      }).join('')}</ul>
+      <div class="kit-foot" id="kit-foot"></div>`;
+    renderKitFoot();
+  }
+  function renderKitFoot() {
+    const foot = $('#kit-foot'); if (!foot) return;
+    const sel = kitSel[kitId];
+    const chosen = Object.entries(sel).filter(([, q]) => q > 0);
+    const units = chosen.reduce((s, [, q]) => s + q, 0);
+    foot.innerHTML = `<p>${plural(chosen.length, 'producto', 'productos')} · ${plural(units, 'unidad', 'unidades')}</p>
+      <button class="btn btn-primary" type="button" id="kit-add" ${chosen.length ? '' : 'disabled'}>${ui('plus')}Agregar lista a mi cotización</button>`;
+  }
+  $('#kit-tabs').addEventListener('click', e => {
+    const b = e.target.closest('[data-kit]'); if (!b) return;
+    kitId = b.dataset.kit; renderKitTabs(); renderKit();
+    $(`#tab-${kitId}`).focus();
+  });
+  $('#kit-tabs').addEventListener('keydown', e => {
+    if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+    e.preventDefault();
+    const i = KITS.findIndex(k => k.id === kitId);
+    const d = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : -1;
+    kitId = KITS[(i + d + KITS.length) % KITS.length].id;
+    renderKitTabs(); renderKit(); $(`#tab-${kitId}`).focus();
+  });
+  $('#kit-panel').addEventListener('click', e => {
+    const sel = kitSel[kitId];
+    const inc = e.target.closest('[data-kit-inc]'), dec = e.target.closest('[data-kit-dec]');
+    if (inc) { sel[inc.dataset.kitInc] = (sel[inc.dataset.kitInc] || 0) + 1; renderKit(); $(`[data-kit-inc="${inc.dataset.kitInc}"]`).focus(); }
+    else if (dec) { const id = dec.dataset.kitDec; sel[id] = Math.max(0, sel[id] - 1); renderKit(); const again = $(`[data-kit-dec="${id}"]`); (again.disabled ? $(`[data-kit-inc="${id}"]`) : again).focus(); }
+    else if (e.target.id === 'kit-add' || e.target.closest('#kit-add')) {
+      const chosen = Object.entries(sel).filter(([, q]) => q > 0);
+      if (chosen.length) addMany(chosen);
+    }
+  });
+  $('#kit-panel').addEventListener('change', e => {
+    const t = e.target.closest('[data-kit-toggle]'); if (!t) return;
+    const id = t.dataset.kitToggle;
+    const k = KITS.find(x => x.id === kitId);
+    kitSel[kitId][id] = t.checked ? (k.items.find(([x]) => x === id)[1]) : 0;
+    renderKit(); $(`#kit-${kitId}-${id}`).focus();
+  });
+
+  /* ---------- Formulario de contacto ---------- */
+  $('#contact-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = { name: $('#cf-name'), org: $('#cf-org'), comuna: $('#cf-comuna'), type: $('#cf-type'), msg: $('#cf-msg') };
+    const name = f.name.value.trim(), msg = f.msg.value.trim();
+    const note = $('#cf-note');
+    if (!name || !msg) {
+      note.textContent = !name ? 'Escribe tu nombre para que sepamos a quién responder.' : 'Escribe tu mensaje antes de enviarlo.';
+      (!name ? f.name : f.msg).focus();
+      return;
+    }
+    const lines = [`Hola MSClinics, soy ${name}.`, '', msg];
+    if (Object.keys(cart).length) { lines.push('', 'Productos de mi cotización:'); for (const [id, q] of Object.entries(cart)) lines.push(`• ${q} × ${byId[id].name}`); }
+    const info = [];
+    if (f.org.value.trim()) info.push(`Institución: ${f.org.value.trim()}`);
+    if (f.comuna.value.trim()) info.push(`Comuna: ${f.comuna.value.trim()}`);
+    info.push(`Tipo de consulta: ${f.type.value}`);
+    lines.push('', ...info);
+    note.textContent = 'Abrimos WhatsApp con tu mensaje. Si no se abrió, escríbenos al +56 9 5003 0765.';
+    window.open(waHref(lines.join('\n')), '_blank', 'noopener');
+  });
+
+  /* ---------- Monitor de signos vitales ---------- */
+  const canvas = $('#ecg');
+  const ctx = canvas.getContext('2d');
+  const css = getComputedStyle(root);
+  const PHOS = css.getPropertyValue('--phos').trim() || '#3BE6A8';
+  const PLETH = css.getPropertyValue('--pleth').trim() || '#5CC9F3';
+  let W = 0, H = 0, dpr = 1;
+  const SWEEP_S = 4;              // segundos por barrido completo
+  let x = 0, simT = 0, lastBeat = -1, nextBeat = 0.2, hr = 72;
+  let prevE = null, prevP = null;
+  const g = (t, mu, s, a) => a * Math.exp(-((t - mu) ** 2) / (2 * s * s));
+  const ecg = t => t < 0 ? 0 : g(t, .10, .025, .12) + g(t, .19, .009, -.14) + g(t, .215, .011, 1) + g(t, .24, .011, -.28) + g(t, .43, .05, .3);
+  const pleth = t => t < 0 ? 0 : g(t, .34, .09, 1) + g(t, .58, .07, .32);
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = Math.max(1, Math.round(r.width * dpr)); H = Math.max(1, Math.round(r.height * dpr));
+    canvas.width = W; canvas.height = H;
+    drawStatic();
+    x = 0; prevE = prevP = null;
+    simT = SWEEP_S;
+  }
+  const yE = v => H * .36 - v * H * .24;
+  const yP = v => H * .9 - v * H * .2;
+  function sampleAt(t) {
+    // Estado del latido en el tiempo t (usa los latidos ya programados)
+    while (t >= nextBeat) { lastBeat = nextBeat; nextBeat += 60 / hr * (1 + (Math.random() - .5) * .04); }
+    const since = lastBeat < 0 ? -1 : t - lastBeat;
+    return [ecg(since), pleth(since)];
+  }
+  function stroke(x0, y0, x1, y1, color) {
+    ctx.strokeStyle = color; ctx.lineWidth = 2 * dpr; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.shadowColor = color; ctx.shadowBlur = 6 * dpr;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+  }
+  function drawStatic() {
+    ctx.clearRect(0, 0, W, H);
+    lastBeat = -1; nextBeat = .2; let pe = null, pp = null;
+    const pxPerS = W / SWEEP_S;
+    for (let px = 0; px < W; px++) {
+      const [e, p] = sampleAt(px / pxPerS);
+      const ye = yE(e), yp = yP(p);
+      if (pe) { stroke(px - 1, pe, px, ye, PHOS); stroke(px - 1, pp, px, yp, PLETH); }
+      pe = ye; pp = yp;
+    }
+  }
+  let beatFlag = false, lastBeatSeen = -1, raf = 0, last = 0, running = false;
+  function frame(now) {
+    if (!running) return;
+    const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+    const pxPerS = W / SWEEP_S;
+    const target = x + dt * pxPerS;
+    ctx.shadowBlur = 0;
+    ctx.clearRect(Math.floor(x) + 1, 0, 14 * dpr, H);           // borra por delante del trazo
+    for (let px = Math.floor(x) + 1; px <= Math.floor(target); px++) {
+      simT += 1 / pxPerS;
+      const col = px % W;
+      if (col === 0) { prevE = prevP = null; ctx.clearRect(0, 0, 16 * dpr, H); }
+      const [e, p] = sampleAt(simT);
+      const ye = yE(e), yp = yP(p);
+      if (prevE !== null) { stroke(col - 1, prevE, col, ye, PHOS); stroke(col - 1, prevP, col, yp, PLETH); }
+      prevE = ye; prevP = yp;
+      if (lastBeat !== lastBeatSeen) { lastBeatSeen = lastBeat; beatFlag = true; }
+    }
+    x = target >= W ? target - W : target;
+    if (beatFlag) {
+      beatFlag = false;
+      const box = $('#hr-box'); box.classList.add('beat'); setTimeout(() => box.classList.remove('beat'), 140);
+    }
+    raf = requestAnimationFrame(frame);
+  }
+  function start() { if (running || reduced) return; running = true; last = 0; raf = requestAnimationFrame(frame); }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+  function heartbeat() {
+    // Un latido extra cada vez que algo entra a la cotización
+    nextBeat = Math.min(nextBeat, simT + .02);
+    const strip = $('#strip'); strip.classList.remove('flash'); void strip.offsetWidth; strip.classList.add('flash');
+  }
+  new ResizeObserver(resize).observe(canvas);
+  new IntersectionObserver(([en]) => { en.isIntersecting && !document.hidden ? start() : stop(); }).observe(canvas);
+  document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
+  // Variación suave de las cifras
+  if (!reduced) setInterval(() => {
+    hr = 70 + Math.round(Math.random() * 6);
+    $('#hr').textContent = hr;
+    $('#spo2').textContent = 97 + Math.round(Math.random() * 2);
+  }, 3500);
+  const clock = () => { $('#clock').textContent = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }); };
+  clock(); setInterval(clock, 30000);
+
+  /* ---------- Inicio ---------- */
+  $('#year').textContent = new Date().getFullYear();
+  renderTiles();
+  renderGrid();
+  renderKitTabs();
+  renderKit();
+  syncCart();
+})();
+</script>
+</body>
+</html>

@@ -11,3 +11,6 @@ sirven por CDN para que la publicación automatizada pueda tomarlas.
 
 Generadas con `src/images.js` del proyecto de automatización, usando las tipografías
 (Outfit y DM Sans) y los colores de marca de kumehub.cl.
+
+`propuestas/` guarda maquetas de sitios para clientes, como el rediseño de
+[msclinics.cl](propuestas/msclinics/). No se usan en la publicación automatizada.
